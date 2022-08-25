@@ -1,15 +1,13 @@
 package com.extendablechattingbe.extendablechattingbe.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@Getter
 public class RoomMember {
 
     @Id @GeneratedValue
