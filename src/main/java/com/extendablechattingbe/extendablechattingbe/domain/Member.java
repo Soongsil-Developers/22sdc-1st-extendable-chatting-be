@@ -9,6 +9,7 @@ import static javax.persistence.GenerationType.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@Getter
 public class Member {
 
     @Id @GeneratedValue(strategy = AUTO)
