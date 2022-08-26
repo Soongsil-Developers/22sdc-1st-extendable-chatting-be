@@ -1,4 +1,4 @@
-package com.extendablechattingbe.extendablechattingbe.request;
+package com.extendablechattingbe.extendablechattingbe.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +11,6 @@ public class PageRequestDTO {
 
     @Builder.Default
     private int size = 10;
-
-
 
 
 }

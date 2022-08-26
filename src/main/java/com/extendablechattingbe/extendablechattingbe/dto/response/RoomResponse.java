@@ -1,4 +1,4 @@
-package com.extendablechattingbe.extendablechattingbe.response;
+package com.extendablechattingbe.extendablechattingbe.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

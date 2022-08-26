@@ -10,9 +10,10 @@ import javax.persistence.*;
 @Getter
 public class RoomMember {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "roomuser_id")
-    private Long  id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;

@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Message {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "message_id")
     private Long id;
 

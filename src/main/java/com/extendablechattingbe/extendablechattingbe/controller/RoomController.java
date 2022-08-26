@@ -1,9 +1,9 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
-import com.extendablechattingbe.extendablechattingbe.request.PageRequestDTO;
-import com.extendablechattingbe.extendablechattingbe.request.RoomRequest;
-import com.extendablechattingbe.extendablechattingbe.response.PageResponse;
-import com.extendablechattingbe.extendablechattingbe.response.RoomResponse;
+import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
+import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
+import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,26 +17,25 @@ public class RoomController {
     private final RoomService service;
 
     @PostMapping("/rooms")
-    public Long register(@Valid @RequestBody RoomRequest request){
+    public Long register(@Valid @RequestBody RoomRequest request) {
         return service.register(request);
     }
 
     @GetMapping("/rooms")
-    public PageResponse getList(PageRequestDTO request){
+    public PageResponse getList(PageRequestDTO request) {
         return service.getList(request);
     }
 
 
-   @GetMapping("/rooms/{roomId}")
-    private RoomResponse getOne(@PathVariable Long roomId){
+    @GetMapping("/rooms/{roomId}")
+    private RoomResponse getOne(@PathVariable Long roomId) {
         return service.getOne(roomId);
-   }
+    }
 
-   @DeleteMapping("/rooms/{roodId}")
-    private void Delete(@PathVariable Long roomId){
+    @DeleteMapping("/rooms/{roodId}")
+    private void Delete(@PathVariable Long roomId) {
         service.delete(roomId);
-   }
-
+    }
 
 
 }

@@ -12,7 +12,8 @@ import static javax.persistence.GenerationType.*;
 @Getter
 public class Member {
 
-    @Id @GeneratedValue(strategy = AUTO)
+    @Id
+    @GeneratedValue(strategy = AUTO)
     @Column(name = "member_id")
     private Long id;
 

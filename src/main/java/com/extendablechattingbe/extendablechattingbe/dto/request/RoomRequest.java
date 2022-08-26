@@ -1,4 +1,4 @@
-package com.extendablechattingbe.extendablechattingbe.request;
+package com.extendablechattingbe.extendablechattingbe.dto.request;
 
 import lombok.Getter;
 
