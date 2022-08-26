@@ -17,7 +17,7 @@ public class RoomController {
     private final RoomService service;
 
     @PostMapping("/rooms")
-    public Long register(@Valid @RequestBody RoomRequest request) {
+    public Long register(@Valid RoomRequest request) {
         return service.register(request);
     }
 

@@ -24,7 +24,7 @@ public class RoomService {
 
     private final RoomRepository repository;
 
-    @Transactional(readOnly = false)
+    @Transactional
     public Long register(RoomRequest request) {
         Room room = Room.builder()
             .roomName(request.getRoomName())
@@ -56,6 +56,7 @@ public class RoomService {
         return response;
     }
 
+    @Transactional
     public void delete(Long id) {
         Room deleteRoom = repository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
