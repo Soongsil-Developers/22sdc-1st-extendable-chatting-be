@@ -13,16 +13,19 @@ import static javax.persistence.GenerationType.*;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = AUTO)
+    @GeneratedValue
     @Column(name = "member_id")
     private Long id;
 
-    private String name;
+    private String nickname;
 
+    @Transient
+    private String jwtToken;
 
     @Builder
-    public Member(String name) {
-        this.name = name;
+    public Member(String nickname,String jwtToken) {
+        this.nickname = nickname;
+        this.jwtToken = jwtToken;
     }
     //
 //   @OneToMany(mappedBy = "user",orphanRemoval = true)
