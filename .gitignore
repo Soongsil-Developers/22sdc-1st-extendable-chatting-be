@@ -47,3 +47,6 @@ BOOT-INF/classes/static/docs/index.html
 src/main/resources/static/docs/index.html
 
 .DS_Store
+
+# IntelliJ project files
+application.properties
