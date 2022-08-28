@@ -11,18 +11,18 @@ spring:
     activate:
       on-profile: local
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${LOCAL_DATASOURCE_URL}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: ${LOCAL_DATASOURCE_USERNAME}
-    password: ${LOCAL_DATASOURCE_PASSWORD}
-
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${LOCAL_DATASOURCE_URL}
+    username: ${LOCAL_DATASOURCE_USERNAME}
+    password: ${LOCAL_DATASOURCE_PASSWORD}
 
 logging.level:
   org.hibernate.sql: debug
