@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+    context-path: /
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${PROD_DATASOURCE_URL}?serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${PROD_DATASOURCE_USERNAME}
+    password: ${PROD_DATASOURCE_PASSWORD}
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+logging.level:
+  org.hibernate.sql: debug
