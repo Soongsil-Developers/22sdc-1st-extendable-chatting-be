@@ -26,3 +26,7 @@ spring:
 
 logging.level:
   org.hibernate.sql: debug
+
+springdoc:
+  api-docs:
+    enabled: false
