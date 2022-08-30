@@ -22,7 +22,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class RoomService {
 
-    private final RoomRepository repository;
+    private final RoomRepository roomRepository;
 
     @Transactional
     public Long register(RoomRequest request) {
@@ -30,7 +30,7 @@ public class RoomService {
             .roomName(request.getRoomName())
             .build();
 
-        repository.save(room);
+        roomRepository.save(room);
         return room.getId();
 
     }
@@ -39,14 +39,14 @@ public class RoomService {
 
         Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(),
             Sort.by("room_id").descending());
-        Page<Room> result = repository.findAll(pageable);
-        Function<Room, RoomResponse> fn = (entity -> entityToResponse(entity));
+        Page<Room> result = roomRepository.findAll(pageable);
+        Function<Room, RoomResponse> fn = (entity -> RoomResponse.from(entity));
         return new PageResponse(result, fn);
 
     }
 
     public RoomResponse getOne(Long id) {
-        Room findRoom = repository.findById(id)
+        Room findRoom = roomRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
         RoomResponse response = RoomResponse.builder()
             .id(findRoom.getId())
@@ -58,11 +58,16 @@ public class RoomService {
 
     @Transactional
     public void delete(Long id) {
-        Room deleteRoom = repository.findById(id)
+        Room deleteRoom = roomRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
-        repository.delete(deleteRoom);
+        roomRepository.delete(deleteRoom);
     }
 
+
+    /**
+     * Use RoomResponse.from(Room) for changing Room to RoomResponse
+     * **/
+    @Deprecated
     public RoomResponse entityToResponse(Room entity) {
         RoomResponse response = RoomResponse.builder()
             .id(entity.getId())

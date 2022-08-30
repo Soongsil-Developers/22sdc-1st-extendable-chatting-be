@@ -14,27 +14,27 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class RoomController {
 
-    private final RoomService service;
+    private final RoomService roomService;
 
     @PostMapping("/rooms")
     public Long register(@Valid RoomRequest request) {
-        return service.register(request);
+        return roomService.register(request);
     }
 
     @GetMapping("/rooms")
     public PageResponse getList(PageRequestDTO request) {
-        return service.getList(request);
+        return roomService.getList(request);
     }
 
 
     @GetMapping("/rooms/{roomId}")
     private RoomResponse getOne(@PathVariable Long roomId) {
-        return service.getOne(roomId);
+        return roomService.getOne(roomId);
     }
 
     @DeleteMapping("/rooms/{roodId}")
     private void Delete(@PathVariable Long roomId) {
-        service.delete(roomId);
+        roomService.delete(roomId);
     }
 
 
