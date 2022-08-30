@@ -6,6 +6,7 @@ import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.function.Function;
 
 
 @Service
@@ -24,7 +23,8 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
-    @Transactional
+
+    @Transactional(readOnly = false)
     public Long register(RoomRequest request) {
         Room room = Room.builder()
             .roomName(request.getRoomName())
@@ -47,6 +47,7 @@ public class RoomService {
 
     public RoomResponse getOne(Long id) {
         Room findRoom = roomRepository.findById(id)
+
             .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
         RoomResponse response = RoomResponse.builder()
             .id(findRoom.getId())

@@ -5,11 +5,12 @@ import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.service.RoomService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+@Tag(name="rooms",description="채팅방 API")
 @RestController
 @RequiredArgsConstructor
 public class RoomController {
