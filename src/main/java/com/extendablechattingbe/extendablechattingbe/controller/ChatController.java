@@ -39,11 +39,6 @@ public class ChatController {
 
         log.info("nickname={}",nickname);
 
-        Room room = roomRepository.findById(message.getRoomId())
-            .orElseThrow(() -> new RuntimeException("없는 방입니다."));
-
-        message.addRoom(room);
-
         messageRepository.save(message);
 
         if(message.getType().ENTER.equals(message.getType())) {

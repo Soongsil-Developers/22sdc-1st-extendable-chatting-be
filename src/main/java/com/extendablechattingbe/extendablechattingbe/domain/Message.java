@@ -24,9 +24,6 @@ public class Message {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
 
     @Enumerated(EnumType.STRING)
     private MessageType type;
@@ -40,10 +37,9 @@ public class Message {
     private String sender;
 
     @Builder
-    public Message(String message, Member member, Room room, MessageType type) {
+    public Message(String message, Member member, MessageType type) {
         this.message = message;
         this.member = member;
-        this.room = room;
         this.type = type;
     }
 
@@ -51,9 +47,6 @@ public class Message {
         this.member = member;
     }
 
-    public void addRoom(Room room){
-        this.room = room;
-    }
 
     public void addSender(String nickname){
         this.sender = nickname;
