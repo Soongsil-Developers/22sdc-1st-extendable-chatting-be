@@ -5,36 +5,37 @@ import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.service.RoomService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+@Tag(name="rooms",description="채팅방 API")
 @RestController
 @RequiredArgsConstructor
 public class RoomController {
 
-    private final RoomService service;
+    private final RoomService roomService;
 
     @PostMapping("/rooms")
     public Long register(@Valid RoomRequest request) {
-        return service.register(request);
+        return roomService.register(request);
     }
 
     @GetMapping("/rooms")
     public PageResponse getList(PageRequestDTO request) {
-        return service.getList(request);
+        return roomService.getList(request);
     }
 
 
     @GetMapping("/rooms/{roomId}")
     private RoomResponse getOne(@PathVariable Long roomId) {
-        return service.getOne(roomId);
+        return roomService.getOne(roomId);
     }
 
     @DeleteMapping("/rooms/{roodId}")
     private void Delete(@PathVariable Long roomId) {
-        service.delete(roomId);
+        roomService.delete(roomId);
     }
 
 

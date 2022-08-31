@@ -6,6 +6,7 @@ import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,23 +15,22 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.function.Function;
-
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RoomService {
 
-    private final RoomRepository repository;
+    private final RoomRepository roomRepository;
 
-    @Transactional
+
+    @Transactional(readOnly = false)
     public Long register(RoomRequest request) {
         Room room = Room.builder()
             .roomName(request.getRoomName())
             .build();
 
-        repository.save(room);
+        roomRepository.save(room);
         return room.getId();
 
     }
@@ -39,14 +39,15 @@ public class RoomService {
 
         Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(),
             Sort.by("room_id").descending());
-        Page<Room> result = repository.findAll(pageable);
-        Function<Room, RoomResponse> fn = (entity -> entityToResponse(entity));
+        Page<Room> result = roomRepository.findAll(pageable);
+        Function<Room, RoomResponse> fn = (entity -> RoomResponse.from(entity));
         return new PageResponse(result, fn);
 
     }
 
     public RoomResponse getOne(Long id) {
-        Room findRoom = repository.findById(id)
+        Room findRoom = roomRepository.findById(id)
+
             .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
         RoomResponse response = RoomResponse.builder()
             .id(findRoom.getId())
@@ -58,11 +59,16 @@ public class RoomService {
 
     @Transactional
     public void delete(Long id) {
-        Room deleteRoom = repository.findById(id)
+        Room deleteRoom = roomRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
-        repository.delete(deleteRoom);
+        roomRepository.delete(deleteRoom);
     }
 
+
+    /**
+     * Use RoomResponse.from(Room) for changing Room to RoomResponse
+     * **/
+    @Deprecated
     public RoomResponse entityToResponse(Room entity) {
         RoomResponse response = RoomResponse.builder()
             .id(entity.getId())
