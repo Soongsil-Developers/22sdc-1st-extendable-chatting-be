@@ -1,0 +1,9 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_DRIVE_CLIENT_ID}
+            client-secret: ${GOOGLE_DRIVE_SECRET_KEY}
+            scope: email
