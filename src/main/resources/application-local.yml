@@ -24,5 +24,11 @@ spring:
     username: ${LOCAL_DATASOURCE_USERNAME}
     password: ${LOCAL_DATASOURCE_PASSWORD}
 
+
+ profiles:
+   include: oauth
+
+
 logging.level:
   org.hibernate.sql: debug
+
