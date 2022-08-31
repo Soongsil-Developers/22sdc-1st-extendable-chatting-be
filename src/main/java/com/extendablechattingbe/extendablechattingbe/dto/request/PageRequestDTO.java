@@ -1,4 +1,4 @@
-package com.extendablechattingbe.extendablechattingbe.request;
+package com.extendablechattingbe.extendablechattingbe.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -14,8 +14,6 @@ public class PageRequestDTO {
 
     @Schema(description="페이지 사이즈",defaultValue = "10")
     private int size;
-
-
 
 
 }

@@ -10,14 +10,17 @@ import javax.persistence.*;
 @Getter
 public class RoomMember {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "roomuser_id")
-    private Long  id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @Builder

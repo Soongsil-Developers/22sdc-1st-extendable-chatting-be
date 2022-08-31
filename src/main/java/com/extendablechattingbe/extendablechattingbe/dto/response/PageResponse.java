@@ -1,17 +1,16 @@
-package com.extendablechattingbe.extendablechattingbe.response;
+package com.extendablechattingbe.extendablechattingbe.dto.response;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
-import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.function.Function;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-@Schema(description="페이지 응답DTO")
+
 @Data
-public class PageResponse<DTO,EN> {
+public class PageResponse<DTO, EN> {
 
     private List<DTO> dtoList;
 

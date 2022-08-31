@@ -13,16 +13,19 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Message {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "message_id")
     private Long id;
 
     private String message;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @Enumerated(EnumType.STRING)

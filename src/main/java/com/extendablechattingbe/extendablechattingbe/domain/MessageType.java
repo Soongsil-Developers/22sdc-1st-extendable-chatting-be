@@ -1,5 +1,5 @@
 package com.extendablechattingbe.extendablechattingbe.domain;
 
 public enum MessageType {
-    ENTER,TALK,EXIT,REMOVE
+    ENTER, TALK, EXIT
 }
