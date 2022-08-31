@@ -28,6 +28,9 @@ spring:
  profiles:
    include: oauth
 
+ freemarker:
+   template-loader-path: classpath:/templates
+   suffix: .ftl
 
 logging.level:
   org.hibernate.sql: debug

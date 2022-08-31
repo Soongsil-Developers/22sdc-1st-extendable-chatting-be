@@ -54,7 +54,7 @@ public class OAuthUserDetailsService extends DefaultOAuth2UserService {
 
 
     private Member saveFromSocialMember(String loginId){
-        Optional<Member> result = repository.findByLoginId(loginId, true);
+        Optional<Member> result = repository.findByLoginIdAndFromSocial(loginId, true);
         if(result.isPresent()){
             return result.get();
         }

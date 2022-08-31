@@ -35,6 +35,10 @@ public class Message {
     private LocalDateTime createdDate;
 
 
+    private Long roomId;
+
+    private String sender;
+
     @Builder
     public Message(String message, Member member, Room room, MessageType type) {
         this.message = message;
@@ -42,4 +46,21 @@ public class Message {
         this.room = room;
         this.type = type;
     }
+
+    public void addMember(Member member){
+        this.member = member;
+    }
+
+    public void addRoom(Room room){
+        this.room = room;
+    }
+
+    public void addSender(String nickname){
+        this.sender = nickname;
+    }
+
+    public void addMessage(String message){
+        this.message = message;
+    }
+
 }

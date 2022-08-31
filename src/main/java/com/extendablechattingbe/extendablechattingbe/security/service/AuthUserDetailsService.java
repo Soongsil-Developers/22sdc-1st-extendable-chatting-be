@@ -22,7 +22,7 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> findMember = repository.findByLoginId(username, false);
+        Optional<Member> findMember = repository.findByLoginIdAndFromSocial(username, false);
         if(!findMember.isPresent()){
             throw new UsernameNotFoundException("아이디를 다시 확인하세요");
         }

@@ -24,7 +24,7 @@ public class SecurityConfig {
         http.formLogin();
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
-        http.oauth2Login();
+//        http.oauth2Login();
 
         return http.build();
     }
