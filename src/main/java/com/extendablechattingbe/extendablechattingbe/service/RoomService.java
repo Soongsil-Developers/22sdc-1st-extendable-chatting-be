@@ -38,7 +38,7 @@ public class RoomService {
     public PageResponse getList(PageRequestDTO request) {
 
         Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(),
-            Sort.by("room_id").descending());
+            Sort.by("id").descending());
         Page<Room> result = roomRepository.findAll(pageable);
         Function<Room, RoomResponse> fn = (entity -> RoomResponse.from(entity));
         return new PageResponse(result, fn);
@@ -47,7 +47,6 @@ public class RoomService {
 
     public RoomResponse getOne(Long id) {
         Room findRoom = roomRepository.findById(id)
-
             .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
         RoomResponse response = RoomResponse.builder()
             .id(findRoom.getId())

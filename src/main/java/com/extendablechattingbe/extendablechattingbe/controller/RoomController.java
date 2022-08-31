@@ -18,12 +18,12 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/rooms")
-    public Long register(@Valid RoomRequest request) {
+    public Long register(@RequestBody @Valid RoomRequest request) {
         return roomService.register(request);
     }
 
     @GetMapping("/rooms")
-    public PageResponse getList(PageRequestDTO request) {
+    public PageResponse getList(@RequestBody PageRequestDTO request) {
         return roomService.getList(request);
     }
 
@@ -33,7 +33,7 @@ public class RoomController {
         return roomService.getOne(roomId);
     }
 
-    @DeleteMapping("/rooms/{roodId}")
+    @DeleteMapping("/rooms/{roomId}")
     private void Delete(@PathVariable Long roomId) {
         roomService.delete(roomId);
     }
