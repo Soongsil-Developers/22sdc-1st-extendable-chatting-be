@@ -22,25 +22,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/chat")
 public class ChatRoomController {
 
-    
+
     private final RoomRepository roomRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    
+
     @GetMapping("/room")
-    public String rooms(Model model){
+    public String rooms(Model model) {
         return "/chat/room";
     }
 
     @GetMapping("/rooms")
     @ResponseBody
-    public List<Room> room(){
+    public List<Room> room() {
         return roomRepository.findAll();
     }
-    
+
     @PostMapping("/room")
     @ResponseBody
-    public Room createRoom(@RequestParam String name){
+    public Room createRoom(@RequestParam String name) {
         Room room = Room.builder()
             .roomName(name)
             .build();
@@ -51,24 +51,24 @@ public class ChatRoomController {
 
     //OAuth
     @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model,@PathVariable Long roomId){
-        model.addAttribute("roomId",roomId);
+    public String roomDetail(Model model, @PathVariable Long roomId) {
+        model.addAttribute("roomId", roomId);
         return "/chat/roomdetail";
     }
-    
+
     @GetMapping("/room/{roomId}")
     @ResponseBody
-    public Room roomInfo(@PathVariable Long roomId){
-        return roomRepository.findById(roomId).orElseThrow(()->new IllegalArgumentException());
+    public Room roomInfo(@PathVariable Long roomId) {
+        return roomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException());
     }
 
     @GetMapping("/user")
     @ResponseBody
-    public LoginInfo getUserInfo(){
+    public LoginInfo getUserInfo() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         return LoginInfo.builder().name(name).token(jwtTokenProvider.generateToken(name)).build();
     }
-    
-    
+
+
 }

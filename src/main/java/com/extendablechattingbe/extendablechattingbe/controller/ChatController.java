@@ -27,7 +27,7 @@ public class ChatController {
 
 
     @MessageMapping("/chat/message")
-    public void message(Message message,@Header("token")String token){
+    public void message(Message message, @Header("token") String token) {
 
         String nickname = jwtTokenProvider.getUserNameFromJwt(token);
 
@@ -37,17 +37,17 @@ public class ChatController {
         message.addMember(member);
         message.addSender(member.getNickname());
 
-        log.info("nickname={}",nickname);
+        log.info("nickname={}", nickname);
 
         messageRepository.save(message);
 
-        if(message.getType().ENTER.equals(message.getType())) {
+        if (message.getType().ENTER.equals(message.getType())) {
             message.addSender("[알림]");
             message.addMessage(nickname + "님이 입장했습니다.");
 
         }
 
-        messagingTemplate.convertAndSend("/sub/chat/room/"+message.getRoomId(),message);
+        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
 

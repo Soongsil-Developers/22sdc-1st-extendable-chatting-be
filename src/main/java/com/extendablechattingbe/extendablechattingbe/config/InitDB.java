@@ -13,27 +13,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Profile("local")
 public class InitDB {
 
     private final StartService startService;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         startService.initData();
     }
-
 
 
     @Component
     @Transactional
     @RequiredArgsConstructor
-    static class StartService{
+    @Profile("local")
+    static class StartService {
 
         private final MemberRepository memberRepository;
         private final PasswordEncoder passwordEncoder;
 
-        public void initData(){
-            IntStream.rangeClosed(1,100).forEach(i->{
+        public void initData() {
+            IntStream.rangeClosed(1, 100).forEach(i -> {
                 Member member = Member.builder()
                     .loginId("user" + i + "@zerock.org")
                     .nickname("사용자" + i)
