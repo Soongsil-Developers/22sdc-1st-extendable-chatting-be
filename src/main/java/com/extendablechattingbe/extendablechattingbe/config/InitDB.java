@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-
+@Profile("local")
 public class InitDB {
 
     private final StartService startService;
@@ -28,6 +28,7 @@ public class InitDB {
     @Component
     @Transactional
     @RequiredArgsConstructor
+    @Profile("local")
     static class StartService{
 
         private final MemberRepository memberRepository;
