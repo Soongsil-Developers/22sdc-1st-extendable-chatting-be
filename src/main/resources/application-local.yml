@@ -10,6 +10,7 @@
   config:
     activate:
       on-profile: local
+    use-legacy-processing: true
 
   jpa:
     database: mysql
@@ -28,8 +29,8 @@
     suffix: .ftl
     template-loader-path: classpath:/templates
 
- profiles:
-  include: oauth
+  profiles:
+    include: oauth
 
 
  logging.level:

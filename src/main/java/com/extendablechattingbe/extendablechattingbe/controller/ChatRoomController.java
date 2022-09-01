@@ -1,6 +1,10 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
+import static com.extendablechattingbe.extendablechattingbe.error.ErrorCode.*;
+
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
+import com.extendablechattingbe.extendablechattingbe.error.ErrorCode;
+import com.extendablechattingbe.extendablechattingbe.error.exception.NotFoundException;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.extendablechattingbe.extendablechattingbe.security.dto.LoginInfo;
 import com.extendablechattingbe.extendablechattingbe.security.token.JwtTokenProvider;
@@ -59,7 +63,8 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public Room roomInfo(@PathVariable Long roomId) {
-        return roomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException());
+        return roomRepository.findById(roomId).orElseThrow(() -> new NotFoundException(
+            ROOM_NOT_FOUND_ERROR));
     }
 
     @GetMapping("/user")

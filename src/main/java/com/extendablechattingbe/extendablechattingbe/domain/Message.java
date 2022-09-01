@@ -36,23 +36,25 @@ public class Message {
 
     private String sender;
 
+
     @Builder
-    public Message(String message, Member member, MessageType type) {
+    public Message(String message, Member member,
+        MessageType type, Long roomId, String sender) {
         this.message = message;
         this.member = member;
         this.type = type;
+        this.roomId = roomId;
+        this.sender = sender;
     }
 
-    public void addMember(Member member){
+
+    public void MessageWhereFrom(Member member, String sender) {
         this.member = member;
+        this.sender = sender;
     }
 
-
-    public void addSender(String nickname){
-        this.sender = nickname;
-    }
-
-    public void addMessage(String message){
+    public void EnterTypeMessage(String sender, String message) {
+        this.sender = sender;
         this.message = message;
     }
 

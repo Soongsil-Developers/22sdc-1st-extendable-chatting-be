@@ -1,9 +1,13 @@
 package com.extendablechattingbe.extendablechattingbe.security.token;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -38,9 +42,21 @@ public class JwtTokenProvider {
         try {
             return Jwts.parser().setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(jwt);
-        }catch (Exception e){
-            log.error("jwt error");
-            return null;
+        }catch (SignatureException ex) {
+            log.error("유효하지 않은 JWT 서명입니다.");
+            throw ex;
+        } catch (MalformedJwtException ex) {
+            log.error("유효하지 않은 JWT 토큰 입니다.");
+            throw ex;
+        } catch (ExpiredJwtException ex) {
+            log.error("만료된 JWT 토큰 입니다.");
+            throw ex;
+        } catch (UnsupportedJwtException ex) {
+            log.error("지원하지 않는 JWT 토큰 입니다.");
+            throw ex;
+        } catch (IllegalArgumentException ex) {
+            log.error("JWT claims 가 비어있습니다.");
+            throw ex;
         }
     }
 }
