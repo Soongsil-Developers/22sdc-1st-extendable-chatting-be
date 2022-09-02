@@ -33,21 +33,26 @@ public class ChatController {
     @MessageMapping("/chat/message")
     public void message(Message message, @Header("token") String token) {
 
-        String loginId = jwtTokenProvider.getUserNameFromJwt(token);
+        Member member = getMemberFromToken(token);
 
-        Member member = memberRepository.findByLoginId(loginId)
-            .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND_ERROR));
-
-        message.MessageWhereFrom(member,member.getNickname());
+        message.MessageWhereFrom(member, member.getNickname());
 
         messageRepository.save(message);
 
         if (message.getType().ENTER.equals(message.getType())) {
-            message.EnterTypeMessage("[알림]",member.getNickname()+"님이 입장했습니다.");
+            message.EnterTypeMessage("[알림]", member.getNickname() + "님이 입장했습니다.");
 
         }
 
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+    }
+
+    private Member getMemberFromToken(String token) {
+        String loginId = jwtTokenProvider.getUserNameFromJwt(token);
+
+        Member member = memberRepository.findByLoginId(loginId)
+            .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND_ERROR));
+        return member;
     }
 
 

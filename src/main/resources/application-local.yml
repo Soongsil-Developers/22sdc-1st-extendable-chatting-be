@@ -1,4 +1,4 @@
- server:
+server:
   port: 8080
   servlet:
     encoding:
@@ -6,7 +6,7 @@
       force: true
     context-path: /
 
- spring:
+spring:
   config:
     activate:
       on-profile: local
@@ -33,7 +33,7 @@
     include: oauth
 
 
- logging.level:
+logging.level:
   org.hibernate.sql: debug
 
 
