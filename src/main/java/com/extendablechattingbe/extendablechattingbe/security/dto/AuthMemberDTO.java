@@ -48,7 +48,4 @@ public class AuthMemberDTO extends User implements OAuth2User {
         this.nickname = nickname;
     }
 
-    public void addFromSocial(boolean fromSocial){
-        this.fromSocial = fromSocial;
-    }
 }

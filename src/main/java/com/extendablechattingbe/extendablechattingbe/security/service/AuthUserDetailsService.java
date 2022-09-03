@@ -1,6 +1,9 @@
 package com.extendablechattingbe.extendablechattingbe.security.service;
 
+import static com.extendablechattingbe.extendablechattingbe.error.ErrorCode.MEMBER_NOT_FOUND_ERROR;
+
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
+import com.extendablechattingbe.extendablechattingbe.error.exception.NotFoundException;
 import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
 import com.extendablechattingbe.extendablechattingbe.security.dto.AuthMemberDTO;
 import java.util.Optional;
@@ -22,9 +25,9 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> findMember = repository.findByLoginId(username, false);
+        Optional<Member> findMember = repository.findByLoginIdAndFromSocial(username, false);
         if(!findMember.isPresent()){
-            throw new UsernameNotFoundException("아이디를 다시 확인하세요");
+            throw new NotFoundException(MEMBER_NOT_FOUND_ERROR);
         }
         Member member = findMember.get();
 
@@ -38,7 +41,6 @@ public class AuthUserDetailsService implements UserDetailsService {
         );
 
         AuthMember.addNickName(member.getNickname());
-        AuthMember.addFromSocial(member.isFromSocial());
         return AuthMember;
     }
 }

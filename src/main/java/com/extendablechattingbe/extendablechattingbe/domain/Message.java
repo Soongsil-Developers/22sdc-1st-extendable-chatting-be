@@ -24,9 +24,6 @@ public class Message {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
 
     @Enumerated(EnumType.STRING)
     private MessageType type;
@@ -35,11 +32,30 @@ public class Message {
     private LocalDateTime createdDate;
 
 
+    private Long roomId;
+
+    private String sender;
+
+
     @Builder
-    public Message(String message, Member member, Room room, MessageType type) {
+    public Message(String message, Member member,
+        MessageType type, Long roomId, String sender) {
         this.message = message;
         this.member = member;
-        this.room = room;
         this.type = type;
+        this.roomId = roomId;
+        this.sender = sender;
     }
+
+
+    public void MessageWhereFrom(Member member, String sender) {
+        this.member = member;
+        this.sender = sender;
+    }
+
+    public void EnterTypeMessage(String sender, String message) {
+        this.sender = sender;
+        this.message = message;
+    }
+
 }

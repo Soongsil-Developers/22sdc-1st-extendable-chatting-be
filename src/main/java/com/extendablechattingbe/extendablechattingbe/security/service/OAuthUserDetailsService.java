@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OAuthUserDetailsService extends DefaultOAuth2UserService {
 
-    private MemberRepository repository;
-    private PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -54,7 +54,7 @@ public class OAuthUserDetailsService extends DefaultOAuth2UserService {
 
 
     private Member saveFromSocialMember(String loginId){
-        Optional<Member> result = repository.findByLoginId(loginId, true);
+        Optional<Member> result = memberRepository.findByLoginIdAndFromSocial(loginId, true);
         if(result.isPresent()){
             return result.get();
         }
@@ -67,7 +67,7 @@ public class OAuthUserDetailsService extends DefaultOAuth2UserService {
             .build();
 
         member.addMemberRole(MemberRole.USER);
-        repository.save(member);
+        memberRepository.save(member);
         return member;
     }
 }
