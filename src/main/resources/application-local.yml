@@ -25,13 +25,6 @@ spring:
     username: ${LOCAL_DATASOURCE_USERNAME}
     password: ${LOCAL_DATASOURCE_PASSWORD}
 
-  freemarker:
-    suffix: .ftl
-    template-loader-path: classpath:/templates
-
-  profiles:
-    include: oauth
-
 
 logging.level:
   org.hibernate.sql: debug
