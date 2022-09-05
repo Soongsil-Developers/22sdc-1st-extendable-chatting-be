@@ -16,6 +16,7 @@ public enum ErrorCode {
 	INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다."),
     MEMBER_NOT_FOUND_ERROR(404, BAD_REQUEST,"해당 멤버는 존재하지 않습니다."),
 	ROOM_NOT_FOUND_ERROR(404, BAD_REQUEST,"해당 방은 존재하지 않습니다."),
+	MESSAGE_NOT_FOUND_ERROR(404,BAD_REQUEST,"해당 메세지는 존재하지 않습니다"),
 	;
 
 

@@ -27,21 +27,10 @@ public class Member {
 
     private String password;
 
-    private boolean fromSocial;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    private Set<MemberRole> roleSet = new HashSet<>();
-
-
     @Builder
-    public Member(String loginId, String nickname, String password, boolean fromSocial) {
+    public Member(String loginId, String nickname, String password) {
         this.loginId = loginId;
         this.nickname = nickname;
         this.password = password;
-        this.fromSocial = fromSocial;
-    }
-
-    public void addMemberRole(MemberRole memberRole) {
-        roleSet.add(memberRole);
     }
 }
