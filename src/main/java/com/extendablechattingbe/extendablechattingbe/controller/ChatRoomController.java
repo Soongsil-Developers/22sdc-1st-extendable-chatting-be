@@ -1,6 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ErrorCode.*;
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessage.*;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.common.error.exception.NotFoundException;

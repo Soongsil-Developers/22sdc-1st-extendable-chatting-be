@@ -1,6 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.security.service;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ErrorCode.MEMBER_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessage.MEMBER_NOT_FOUND_ERROR;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.common.error.exception.NotFoundException;

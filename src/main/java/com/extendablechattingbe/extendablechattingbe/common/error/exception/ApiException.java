@@ -1,15 +1,15 @@
 package com.extendablechattingbe.extendablechattingbe.common.error.exception;
 
-import com.extendablechattingbe.extendablechattingbe.common.ErrorCode;
+import com.extendablechattingbe.extendablechattingbe.common.ResponseMessage;
 
 import lombok.Getter;
 
 @Getter
 public abstract class ApiException extends RuntimeException {
-    private ErrorCode errorCode;
+    private final ResponseMessage error;
 
-    public ApiException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public ApiException(ResponseMessage responseMessage) {
+        super(responseMessage.getMessage());
+        this.error = responseMessage;
     }
 }

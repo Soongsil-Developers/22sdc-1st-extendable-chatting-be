@@ -1,10 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.common.error;
 
-import static org.springframework.http.HttpStatus.*;
-
-import com.extendablechattingbe.extendablechattingbe.common.ErrorCode;
-import com.extendablechattingbe.extendablechattingbe.common.ErrorResponse;
-import org.springframework.http.ResponseEntity;
+import com.extendablechattingbe.extendablechattingbe.common.ResponseMessage;
+import com.extendablechattingbe.extendablechattingbe.common.dto.ApiResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,20 +11,15 @@ import com.extendablechattingbe.extendablechattingbe.common.error.exception.ApiE
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
-	protected ResponseEntity<ErrorResponse> handleException(final Exception e) {
+	protected ApiResponse<Object> handleException(final Exception e) {
 		e.printStackTrace();
-		return ResponseEntity
-			.status(INTERNAL_SERVER_ERROR)
-			.body(ErrorResponse.of(500, INTERNAL_SERVER_ERROR, e.getMessage()));
+		return ApiResponse.error(ResponseMessage.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(ApiException.class)
-	protected ResponseEntity<ErrorResponse> handleApiException(final ApiException e) {
+	protected ApiResponse<Object> handleApiException(final ApiException e) {
 		e.printStackTrace();
-		ErrorCode errorCode = e.getErrorCode();
-		return ResponseEntity
-			.status(errorCode.getStatus())
-			.body(ErrorResponse.of(errorCode));
+		return ApiResponse.error(e.getError());
 	}
 
 }
