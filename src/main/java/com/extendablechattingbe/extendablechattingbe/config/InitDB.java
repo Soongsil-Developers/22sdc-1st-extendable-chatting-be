@@ -18,10 +18,10 @@ public class InitDB {
 
     private final StartService startService;
 
-    @PostConstruct
-    public void init() {
-        startService.initData();
-    }
+//    @PostConstruct
+//    public void init() {
+//        startService.initData();
+//    }
 
 
     @Component
