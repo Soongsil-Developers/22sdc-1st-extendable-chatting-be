@@ -1,19 +1,15 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
-import static com.extendablechattingbe.extendablechattingbe.error.ErrorCode.*;
+import static com.extendablechattingbe.extendablechattingbe.common.ErrorCode.*;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
-import com.extendablechattingbe.extendablechattingbe.domain.Room;
-import com.extendablechattingbe.extendablechattingbe.error.ErrorCode;
-import com.extendablechattingbe.extendablechattingbe.error.exception.NotFoundException;
+import com.extendablechattingbe.extendablechattingbe.common.error.exception.NotFoundException;
 import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.MessageRepository;
-import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.extendablechattingbe.extendablechattingbe.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;

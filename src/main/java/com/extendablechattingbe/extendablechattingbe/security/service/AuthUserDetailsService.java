@@ -1,9 +1,9 @@
 package com.extendablechattingbe.extendablechattingbe.security.service;
 
-import static com.extendablechattingbe.extendablechattingbe.error.ErrorCode.MEMBER_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.ErrorCode.MEMBER_NOT_FOUND_ERROR;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
-import com.extendablechattingbe.extendablechattingbe.error.exception.NotFoundException;
+import com.extendablechattingbe.extendablechattingbe.common.error.exception.NotFoundException;
 import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
 import com.extendablechattingbe.extendablechattingbe.security.dto.AuthMemberDTO;
 import java.util.Optional;

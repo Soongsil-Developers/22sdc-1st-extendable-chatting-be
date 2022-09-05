@@ -1,12 +1,14 @@
-package com.extendablechattingbe.extendablechattingbe.error;
+package com.extendablechattingbe.extendablechattingbe.common.error;
 
 import static org.springframework.http.HttpStatus.*;
 
+import com.extendablechattingbe.extendablechattingbe.common.ErrorCode;
+import com.extendablechattingbe.extendablechattingbe.common.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.extendablechattingbe.extendablechattingbe.error.exception.ApiException;
+import com.extendablechattingbe.extendablechattingbe.common.error.exception.ApiException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

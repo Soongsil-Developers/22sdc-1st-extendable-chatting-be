@@ -1,10 +1,9 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
-import static com.extendablechattingbe.extendablechattingbe.error.ErrorCode.*;
+import static com.extendablechattingbe.extendablechattingbe.common.ErrorCode.*;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
-import com.extendablechattingbe.extendablechattingbe.error.ErrorCode;
-import com.extendablechattingbe.extendablechattingbe.error.exception.NotFoundException;
+import com.extendablechattingbe.extendablechattingbe.common.error.exception.NotFoundException;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.extendablechattingbe.extendablechattingbe.security.dto.LoginInfo;
 import com.extendablechattingbe.extendablechattingbe.security.token.JwtTokenProvider;

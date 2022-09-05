@@ -1,6 +1,6 @@
-package com.extendablechattingbe.extendablechattingbe.error.exception;
+package com.extendablechattingbe.extendablechattingbe.common.error.exception;
 
-import com.extendablechattingbe.extendablechattingbe.error.ErrorCode;
+import com.extendablechattingbe.extendablechattingbe.common.ErrorCode;
 
 import lombok.Getter;
 
