@@ -18,6 +18,7 @@ public class Message {
     @Column(name = "message_id")
     private Long id;
 
+    @Column
     private String message;
 
     @ManyToOne(fetch = FetchType.LAZY)
