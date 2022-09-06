@@ -10,8 +10,4 @@ import org.springframework.data.repository.query.Param;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
 
-    @EntityGraph(attributePaths = {"roleSet"},type = EntityGraphType.LOAD)
-    @Query("select m from Member m where m.loginId = :loginId and m.fromSocial = :social")
-    Optional<Member> findByLoginId(@Param("loginId")String loginId,@Param("social")boolean social);
-
 }

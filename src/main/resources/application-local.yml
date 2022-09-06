@@ -10,12 +10,13 @@ spring:
   config:
     activate:
       on-profile: local
+    use-legacy-processing: true
 
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
 
   datasource:
@@ -31,4 +32,5 @@ profiles:
 
 logging.level:
   org.hibernate.sql: debug
+
 
