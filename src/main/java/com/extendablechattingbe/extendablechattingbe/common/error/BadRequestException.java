@@ -1,4 +1,4 @@
-package com.extendablechattingbe.extendablechattingbe.common.error.exception;
+package com.extendablechattingbe.extendablechattingbe.common.error;
 
 import static org.springframework.http.HttpStatus.*;
 
