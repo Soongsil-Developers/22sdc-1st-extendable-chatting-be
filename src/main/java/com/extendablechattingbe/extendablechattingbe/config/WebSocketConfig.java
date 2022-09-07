@@ -16,6 +16,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(chatHandler, "/ws/chat").setAllowedOrigins("http://localhost:8080");
+        //.withSockJS() 붙이면 테스트 불가
 
     }
 }

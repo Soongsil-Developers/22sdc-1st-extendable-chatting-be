@@ -21,25 +21,24 @@ public class Message {
     @Column
     private String message;
 
+    @Column
+    private String sender;
+
+    @Column
+    private Long roomId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-
     @Enumerated(EnumType.STRING)
     private MessageType type;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "room_id")
+//    private Room room;
 
     @CreatedDate
     private LocalDateTime createdDate;
-
-
-
-
-
 
 }
