@@ -18,13 +18,10 @@ public class Message {
     @Column(name = "message_id")
     private Long id;
 
-    @Column
     private String message;
 
-    @Column
     private String sender;
 
-    @Column
     private Long roomId;
 
     @ManyToOne(fetch = FetchType.LAZY)

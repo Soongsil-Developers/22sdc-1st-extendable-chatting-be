@@ -17,7 +17,6 @@ public class Room {
     @Column(name = "room_id")
     private Long id;
 
-    @Column
     private String roomName;
 
     @Builder
