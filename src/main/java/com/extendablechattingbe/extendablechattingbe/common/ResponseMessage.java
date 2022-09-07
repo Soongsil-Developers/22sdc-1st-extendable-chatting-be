@@ -53,5 +53,4 @@ public enum ResponseMessage {
 	private final int code;
 	private final HttpStatus status;
 	private final String message;
-
 }
