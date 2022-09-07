@@ -1,7 +1,6 @@
-package com.extendablechattingbe.extendablechattingbe.common.dto;
+package com.extendablechattingbe.extendablechattingbe.dto.response;
 
 import com.extendablechattingbe.extendablechattingbe.common.ResponseMessage;
-import java.net.http.HttpResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
