@@ -20,10 +20,6 @@ public class Message {
 
     private String message;
 
-    private String sender;
-
-    private Long roomId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -31,9 +27,9 @@ public class Message {
     @Enumerated(EnumType.STRING)
     private MessageType type;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "room_id")
-//    private Room room;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     @CreatedDate
     private LocalDateTime createdDate;
