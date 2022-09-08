@@ -31,10 +31,9 @@ class RoomServiceTest {
     @CsvSource( {"Room1"})
     //@NullSource
     void register(@AggregateWith(RoomRequestAggregator.class)RoomRequest request) {
-        //Room room=new Room("Room1");
-        //when(roomService.register(any())).thenReturn(room);
-        //assertSame(roomService.register(request),room);
-
+        Room room=new Room("Room1");
+        when(roomService.register(any())).thenReturn(room);
+        assertSame(roomService.register(request).getRoomName(),room.getRoomName());
     }
     static class RoomRequestAggregator implements ArgumentsAggregator{
         @Override
