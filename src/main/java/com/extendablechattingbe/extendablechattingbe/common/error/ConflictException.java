@@ -1,13 +1,13 @@
-package com.extendablechattingbe.extendablechattingbe.common.error.exception;
+package com.extendablechattingbe.extendablechattingbe.common.error;
 
 import static org.springframework.http.HttpStatus.*;
 
 import com.extendablechattingbe.extendablechattingbe.common.ResponseMessage;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(FORBIDDEN)
-public class ForbiddenException extends ApiException {
-	public ForbiddenException(ResponseMessage responseMessage) {
+@ResponseStatus(CONFLICT)
+public class ConflictException extends ApiException {
+	public ConflictException(ResponseMessage responseMessage) {
 		super(responseMessage);
 	}
 }
