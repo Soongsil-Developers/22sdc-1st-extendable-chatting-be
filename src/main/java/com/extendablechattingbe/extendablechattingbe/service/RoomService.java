@@ -26,10 +26,7 @@ public class RoomService {
 
     @Transactional(readOnly = false)
     public Long register(RoomRequest request) {
-        Room room = Room.builder()
-            .roomName(request.getRoomName())
-            .build();
-
+        Room room = new Room(request.getRoomName());
         roomRepository.save(room);
         return room.getId();
 

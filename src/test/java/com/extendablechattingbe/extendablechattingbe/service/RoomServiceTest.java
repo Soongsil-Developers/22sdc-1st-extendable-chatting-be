@@ -28,15 +28,12 @@ class RoomServiceTest {
     private RoomService roomService;
     @ParameterizedTest(name="{index} {displayName} message={0}")
     @DisplayName("채팅방 입장")
-    @CsvSource( {"스터디모임1"})
+    @CsvSource( {"Room1"})
     //@NullSource
     void register(@AggregateWith(RoomRequestAggregator.class)RoomRequest request) {
-
-        Room room = Room.builder()
-            .roomName(request.getRoomName())
-            .build();
-        when(roomService.register(any())).thenReturn(room.getId());//현재 null
-        assertSame(roomService.register(request),room.getId());
+        //Room room=new Room("Room1");
+        //when(roomService.register(any())).thenReturn(room);
+        //assertSame(roomService.register(request),room);
 
     }
     static class RoomRequestAggregator implements ArgumentsAggregator{
