@@ -1,40 +1,40 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
 
-import com.extendablechattingbe.extendablechattingbe.common.ResponseMessages;
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
-import com.extendablechattingbe.extendablechattingbe.common.response.SimpleResponse;
+import com.extendablechattingbe.extendablechattingbe.common.response.SimpleResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.BAD_REQUEST_ERROR;
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.INTERNAL_SERVER_ERROR;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler{
 
     @ExceptionHandler(CustomException.class)
-    protected ResponseEntity<SimpleResponse> handleCustomException(final CustomException e) {
-        e.printStackTrace();
-        return buildResponseEntity(e.getSimpleResponse());
+    protected ResponseEntity<SimpleResponseDTO> handleCustomException(final CustomException e) {
+        //e.printStackTrace();
+        return buildResponseEntity(e.getSimpleResponseDTO());
     }
 
     @ExceptionHandler({IllegalArgumentException.class})
-    protected ResponseEntity<SimpleResponse>handleBadRequestException(final IllegalArgumentException e){
-        e.printStackTrace();
-        SimpleResponse simpleResponse= SimpleResponse.of(ResponseMessages.BAD_REQUEST_ERROR);
-        simpleResponse.setMessage(e.getMessage());
-        return buildResponseEntity(simpleResponse);
+    protected ResponseEntity<SimpleResponseDTO>handleBadRequestException(final IllegalArgumentException e){
+        //e.printStackTrace();
+        SimpleResponseDTO simpleResponseDTO = SimpleResponseDTO.of(BAD_REQUEST_ERROR);
+        simpleResponseDTO.setMessage(e.getMessage());
+        return buildResponseEntity(simpleResponseDTO);
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<SimpleResponse> handleException(final Exception e) {
-        e.printStackTrace();
-        return buildResponseEntity(new SimpleResponse(INTERNAL_SERVER_ERROR));
+    protected ResponseEntity<SimpleResponseDTO> handleException(final Exception e) {
+        //e.printStackTrace();
+        return buildResponseEntity(SimpleResponseDTO.of(INTERNAL_SERVER_ERROR));
     }
 
-    private ResponseEntity<SimpleResponse> buildResponseEntity(SimpleResponse simpleResponse){
-        return ResponseEntity.status(simpleResponse.getStatus()).body(simpleResponse);
+    private ResponseEntity<SimpleResponseDTO> buildResponseEntity(SimpleResponseDTO simpleResponseDTO){
+        return ResponseEntity.status(simpleResponseDTO.getStatus()).body(simpleResponseDTO);
     }
 }
