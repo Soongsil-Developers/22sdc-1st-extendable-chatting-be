@@ -63,18 +63,6 @@ public class RoomService {
     }
 
 
-    /**
-     * Use RoomResponse.from(Room) for changing Room to RoomResponse
-     * **/
-    @Deprecated
-    public RoomResponse entityToResponse(Room entity) {
-        RoomResponse response = RoomResponse.builder()
-            .id(entity.getId())
-            .roomName(entity.getRoomName())
-            .build();
-
-        return response;
-    }
 
 
 }

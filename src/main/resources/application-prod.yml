@@ -24,8 +24,6 @@ spring:
     username: ${PROD_DATASOURCE_USERNAME}
     password: ${PROD_DATASOURCE_PASSWORD}
 
-profiles:
-  include: oauth
 
 logging.level:
   org.hibernate.sql: debug

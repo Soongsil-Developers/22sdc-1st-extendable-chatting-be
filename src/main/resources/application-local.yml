@@ -26,10 +26,6 @@ spring:
     password: ${LOCAL_DATASOURCE_PASSWORD}
 
 
-profiles:
-  include: oauth
-
-
 logging.level:
   org.hibernate.sql: debug
 
