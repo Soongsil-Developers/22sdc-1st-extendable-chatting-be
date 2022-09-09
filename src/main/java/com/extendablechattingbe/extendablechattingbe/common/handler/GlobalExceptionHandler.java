@@ -1,27 +1,40 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessage.INTERNAL_SERVER_ERROR;
 
-import com.extendablechattingbe.extendablechattingbe.common.ResponseMessage;
-import com.extendablechattingbe.extendablechattingbe.common.error.ApiException;
+import com.extendablechattingbe.extendablechattingbe.common.ResponseMessages;
+import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
+import com.extendablechattingbe.extendablechattingbe.common.response.SimpleResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.INTERNAL_SERVER_ERROR;
+
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler{
+
+    @ExceptionHandler(CustomException.class)
+    protected ResponseEntity<SimpleResponse> handleCustomException(final CustomException e) {
+        e.printStackTrace();
+        return buildResponseEntity(e.getSimpleResponse());
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    protected ResponseEntity<SimpleResponse>handleBadRequestException(final IllegalArgumentException e){
+        e.printStackTrace();
+        SimpleResponse simpleResponse= SimpleResponse.of(ResponseMessages.BAD_REQUEST_ERROR);
+        simpleResponse.setMessage(e.getMessage());
+        return buildResponseEntity(simpleResponse);
+    }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ResponseMessage> handleException(final Exception e) {
+    protected ResponseEntity<SimpleResponse> handleException(final Exception e) {
         e.printStackTrace();
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR.getStatus()).body(INTERNAL_SERVER_ERROR);
+        return buildResponseEntity(new SimpleResponse(INTERNAL_SERVER_ERROR));
     }
 
-    @ExceptionHandler(ApiException.class)
-    protected ResponseEntity<ResponseMessage> handleApiException(final ApiException e) {
-        e.printStackTrace();
-        ResponseMessage error=e.getError();
-        return ResponseEntity.status(error.getStatus()).body(error);
+    private ResponseEntity<SimpleResponse> buildResponseEntity(SimpleResponse simpleResponse){
+        return ResponseEntity.status(simpleResponse.getStatus()).body(simpleResponse);
     }
-
 }
