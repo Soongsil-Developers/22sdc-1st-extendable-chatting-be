@@ -23,8 +23,7 @@ public class GlobalExceptionHandler{
     @ExceptionHandler({IllegalArgumentException.class})
     protected ResponseEntity<SimpleResponseDTO>handleBadRequestException(final IllegalArgumentException e){
         //e.printStackTrace();
-        SimpleResponseDTO simpleResponseDTO = SimpleResponseDTO.of(BAD_REQUEST_ERROR);
-        simpleResponseDTO.setMessage(e.getMessage());
+        SimpleResponseDTO simpleResponseDTO = SimpleResponseDTO.of(BAD_REQUEST_ERROR,e.getMessage());
         return buildResponseEntity(simpleResponseDTO);
     }
 
