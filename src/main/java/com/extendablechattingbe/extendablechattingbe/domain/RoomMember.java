@@ -6,8 +6,15 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
+@ToString(exclude = {"member","room"})
 @Getter
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(
+            columnNames = {"room_id","member_id"}
+        )
+    }
+)
 public class RoomMember {
 
     @Id
@@ -23,7 +30,6 @@ public class RoomMember {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @Builder
     public RoomMember(Member member, Room room) {
         this.member = member;
         this.room = room;
