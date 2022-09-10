@@ -44,7 +44,7 @@ public class ChatHandler extends TextWebSocketHandler {
         Map<String, String> map = objectMapper.readValue(json, Map.class);
 
         Long roomId = Long.parseLong(map.get("roomId"));
-        String sender = map.get("sender");
+        String sender = map.get("userId");
 
         chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
         chatRoomMap.get(roomId).add(session);
