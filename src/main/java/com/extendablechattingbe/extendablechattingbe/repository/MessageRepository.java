@@ -1,5 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,6 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
 
 	// 방 입장부터 메시지 이어서 보기
 	@Query(value = "select distinct m from Message m where m.room = :room and m.createdDate >= :enterDate order by m.createdDate DESC")
-	List<Message> findAllByEnterDate(@Param("room")Room room, @Param("enterDate") LocalDateTime enterDate, Pageable pageable);
+	Page<Message> findAllByEnterDate(@Param("room")Room room, @Param("enterDate") LocalDateTime enterDate, Pageable pageable);
 
 }

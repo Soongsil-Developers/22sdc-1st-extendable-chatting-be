@@ -4,18 +4,17 @@ import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageHistoryRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
-import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.service.RoomService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @Tag(name="rooms",description="채팅방 API")
 @RestController
@@ -47,12 +46,11 @@ public class RoomController {
         return ResponseEntity.ok().build();
     }
 
-
     @GetMapping("/rooms/{roomId}/chats")
-    public ResponseEntity getMessageHistory(@PathVariable Long roomId, @RequestBody MessageHistoryRequestDTO requestDTO) {
+    public ResponseEntity<PageResponse> getMessageHistory(@PathVariable Long roomId, @RequestBody MessageHistoryRequestDTO requestDTO) {
         Long memberId = requestDTO.getMemberId();
         PageRequestDTO pageRequest = requestDTO.getPageRequest();
-        List<MessageResponseDTO> messageHistory = roomService.getMessageHistory(roomId, memberId, pageRequest);
-        return ResponseEntity.ok().body(messageHistory);
+        return ResponseEntity.ok()
+                    .body(roomService.getMessageHistory(roomId, memberId, pageRequest));
     }
 }

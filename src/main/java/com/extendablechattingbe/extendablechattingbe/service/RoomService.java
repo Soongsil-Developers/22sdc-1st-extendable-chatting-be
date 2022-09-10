@@ -16,10 +16,8 @@ import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -74,7 +72,7 @@ public class RoomService {
         roomRepository.delete(deleteRoom);
     }
 
-    public List<MessageResponseDTO> getMessageHistory(Long roomId, Long memberId, PageRequestDTO pageRequest) {
+    public PageResponse getMessageHistory(Long roomId, Long memberId, PageRequestDTO pageRequest) {
         Member member = getMember(memberId);
         Room room = getRoom(roomId);
         Pageable pageable = PageRequest.of(pageRequest.getPage() - 1, pageRequest.getSize(), Sort.by("id").descending());
@@ -82,10 +80,9 @@ public class RoomService {
 
         if (optionalEnterDate.isPresent()) {  // == 이전 방문 이력이 있는 사용자
             LocalDateTime enterDate = optionalEnterDate.get();
-            List<Message> messages = messageRepository.findAllByEnterDate(room, enterDate, pageable);
-            return messages.stream()
-                .map(MessageResponseDTO::from)
-                .collect(Collectors.toList());
+            Page<Message> result = messageRepository.findAllByEnterDate(room, enterDate, pageable);
+            Function<Message, MessageResponseDTO> fn = (entity -> MessageResponseDTO.from(entity));
+            return new PageResponse(result, fn);
         }
         return null;  // == 처음 방문한 사용자
     }
