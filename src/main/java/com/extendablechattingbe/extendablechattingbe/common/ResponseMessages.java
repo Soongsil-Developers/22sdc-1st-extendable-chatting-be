@@ -42,7 +42,7 @@ public enum ResponseMessages {
 
 	//404 NOT FOUND
 	//NOT_FOUND_ERROR(404, NOT_FOUND, ""),
-	//MEMBER_NOT_FOUND_ERROR(404, NOT_FOUND,"해당 멤버는 존재하지 않습니다."),
+	MEMBER_NOT_FOUND_ERROR(404, NOT_FOUND,"해당 멤버는 존재하지 않습니다."),
 	ROOM_NOT_FOUND_ERROR(404, NOT_FOUND,"해당 방은 존재하지 않습니다."),
 
 	//500 INTERNAL SERVER ERROR

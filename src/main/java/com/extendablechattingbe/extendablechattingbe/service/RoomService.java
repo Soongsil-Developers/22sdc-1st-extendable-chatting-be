@@ -1,12 +1,14 @@
 package com.extendablechattingbe.extendablechattingbe.service;
 
-import com.extendablechattingbe.extendablechattingbe.common.ResponseMessage;
-import com.extendablechattingbe.extendablechattingbe.common.error.exception.NotFoundException;
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.*;
+
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
+import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
+import com.extendablechattingbe.extendablechattingbe.repository.MessageRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
@@ -27,16 +29,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessage.*;
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
-
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final MemberRepository memberRepository;
+    private final MessageRepository messageRepository;
 
 
     @Transactional(readOnly = false)
@@ -92,13 +92,11 @@ public class RoomService {
 
     private Member getMember(Long id) {
         return memberRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND_ERROR));
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
     }
 
     private Room getRoom(Long id) {
         return roomRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(ResponseMessage.ROOM_NOT_FOUND_ERROR));
+            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageHistoryRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @Tag(name="rooms",description="채팅방 API")
 @RestController
@@ -47,10 +49,10 @@ public class RoomController {
 
 
     @GetMapping("/rooms/{roomId}/chats")
-    public ApiResponse<List<MessageResponseDTO>> getMessageHistory(@PathVariable Long roomId, @RequestBody MessageHistoryRequestDTO requestDTO) {
+    public ResponseEntity getMessageHistory(@PathVariable Long roomId, @RequestBody MessageHistoryRequestDTO requestDTO) {
         Long memberId = requestDTO.getMemberId();
         PageRequestDTO pageRequest = requestDTO.getPageRequest();
         List<MessageResponseDTO> messageHistory = roomService.getMessageHistory(roomId, memberId, pageRequest);
-        return ApiResponse.success(SUCCESS_NO_CONTENT, messageHistory);
+        return ResponseEntity.ok().body(messageHistory);
     }
 }
