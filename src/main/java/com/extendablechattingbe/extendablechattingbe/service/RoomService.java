@@ -1,14 +1,12 @@
 package com.extendablechattingbe.extendablechattingbe.service;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessage.*;
-
+import com.extendablechattingbe.extendablechattingbe.common.ResponseMessage;
 import com.extendablechattingbe.extendablechattingbe.common.error.exception.NotFoundException;
+import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
-import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
-import com.extendablechattingbe.extendablechattingbe.repository.MessageRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
@@ -29,6 +27,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessage.*;
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -36,18 +37,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoomService {
 
     private final RoomRepository roomRepository;
-    private final MessageRepository messageRepository;
-    private final MemberRepository memberRepository;
 
 
     @Transactional(readOnly = false)
-    public Long register(RoomRequest request) {
-        Room room = Room.builder()
-            .roomName(request.getRoomName())
-            .build();
-
-        roomRepository.save(room);
-        return room.getId();
+    public Room register(RoomRequest request) {
+        Room room = new Room(request.getRoomName());
+        return roomRepository.save(room);
 
     }
 
@@ -63,7 +58,7 @@ public class RoomService {
 
     public RoomResponse getOne(Long id) {
         Room findRoom = roomRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
+            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
         RoomResponse response = RoomResponse.builder()
             .id(findRoom.getId())
             .roomName(findRoom.getRoomName())
@@ -75,22 +70,8 @@ public class RoomService {
     @Transactional
     public void delete(Long id) {
         Room deleteRoom = roomRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("없는 방입니다."));
+            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
         roomRepository.delete(deleteRoom);
-    }
-
-
-    /**
-     * Use RoomResponse.from(Room) for changing Room to RoomResponse
-     * **/
-    @Deprecated
-    public RoomResponse entityToResponse(Room entity) {
-        RoomResponse response = RoomResponse.builder()
-            .id(entity.getId())
-            .roomName(entity.getRoomName())
-            .build();
-
-        return response;
     }
 
     public List<MessageResponseDTO> getMessageHistory(Long roomId, Long memberId, PageRequestDTO pageRequest) {
@@ -103,8 +84,8 @@ public class RoomService {
             LocalDateTime enterDate = optionalEnterDate.get();
             List<Message> messages = messageRepository.findAllByEnterDate(room, enterDate, pageable);
             return messages.stream()
-                    .map(MessageResponseDTO::from)
-                    .collect(Collectors.toList());
+                .map(MessageResponseDTO::from)
+                .collect(Collectors.toList());
         }
         return null;  // == 처음 방문한 사용자
     }
@@ -116,6 +97,8 @@ public class RoomService {
 
     private Room getRoom(Long id) {
         return roomRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(ROOM_NOT_FOUND_ERROR));
+            .orElseThrow(() -> new NotFoundException(ResponseMessage.ROOM_NOT_FOUND_ERROR));
     }
+
+
 }

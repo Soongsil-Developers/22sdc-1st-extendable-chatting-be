@@ -1,11 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessage.*;
-
-import java.util.List;
-
-import com.extendablechattingbe.extendablechattingbe.common.dto.ApiResponse;
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageHistoryRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
@@ -14,12 +9,12 @@ import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.service.RoomService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
+
 @Tag(name="rooms",description="채팅방 API")
 @RestController
 @RequiredArgsConstructor
@@ -28,25 +23,28 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/rooms")
-    public Long register(@RequestBody @Valid RoomRequest request) {
-        return roomService.register(request);
+    public ResponseEntity<Room> register(@RequestBody @Valid RoomRequest request) {
+        Room room=roomService.register(request);
+        return ResponseEntity.created(URI.create("/rooms/"+room.getId())).body(room);
     }
 
     @GetMapping("/rooms")
-    public PageResponse getList(@RequestBody PageRequestDTO request) {
-        return roomService.getList(request);
+    public ResponseEntity<PageResponse> getList(@RequestBody PageRequestDTO request) {
+        return ResponseEntity.ok().body(roomService.getList(request));
     }
 
 
     @GetMapping("/rooms/{roomId}")
-    private RoomResponse getOne(@PathVariable Long roomId) {
-        return roomService.getOne(roomId);
+    private ResponseEntity<RoomResponse> getOne(@PathVariable Long roomId) {
+        return ResponseEntity.ok().body(roomService.getOne(roomId));
     }
 
     @DeleteMapping("/rooms/{roomId}")
-    private void Delete(@PathVariable Long roomId) {
+    private ResponseEntity delete(@PathVariable Long roomId) {
         roomService.delete(roomId);
+        return ResponseEntity.ok().build();
     }
+
 
     @GetMapping("/rooms/{roomId}/chats")
     public ApiResponse<List<MessageResponseDTO>> getMessageHistory(@PathVariable Long roomId, @RequestBody MessageHistoryRequestDTO requestDTO) {
