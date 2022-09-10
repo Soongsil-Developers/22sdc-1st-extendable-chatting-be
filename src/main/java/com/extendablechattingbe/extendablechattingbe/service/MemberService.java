@@ -44,13 +44,12 @@ public class MemberService {
     }
 
     @Transactional
-    public void DeleteMember(Long memberId){
+    public void DeleteMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
 
         memberRepository.delete(member);
     }
-
 
 
     @Transactional
@@ -60,7 +59,7 @@ public class MemberService {
 
         Room room = getRoomFromId(roomId);
 
-        RoomMember roomMember = new RoomMember(member,room);
+        RoomMember roomMember = new RoomMember(member, room);
 
         roomMemberRepository.save(roomMember);
         return roomMember;

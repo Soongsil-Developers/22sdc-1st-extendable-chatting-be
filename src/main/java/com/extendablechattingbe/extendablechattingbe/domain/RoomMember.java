@@ -6,12 +6,12 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"member","room"})
+@ToString(exclude = {"member", "room"})
 @Getter
 @Table(
     uniqueConstraints = {
         @UniqueConstraint(
-            columnNames = {"room_id","member_id"}
+            columnNames = {"room_id", "member_id"}
         )
     }
 )
