@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/members/signup")
+    @PostMapping("/members")
     public ResponseEntity<Member> signUp(@RequestBody MemberRequest request){
         Member member = memberService.signUp(request);
         return ResponseEntity.created(URI.create("/members/"+member.getId())).body(member);
@@ -38,6 +38,12 @@ public class MemberController {
     public ResponseEntity<MemberResponse> getMember(@PathVariable Long memberId){
         MemberResponse response = memberService.getMemberOne(memberId);
         return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping("/members/{memberId}")
+    public ResponseEntity DeleteMember(@PathVariable Long memberId){
+        memberService.DeleteMember(memberId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/members/{memberId}/rooms/{roomId}")
@@ -54,7 +60,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/members/{memberId}/rooms/{roomId}")
-    public ResponseEntity<Object> LeaveRoom(@PathVariable("memberId")Long memberId, @PathVariable("roomId")Long roomId){
+    public ResponseEntity LeaveRoom(@PathVariable("memberId")Long memberId, @PathVariable("roomId")Long roomId){
         memberService.LeaveTheRoom(memberId, roomId);
         return ResponseEntity.ok().build();
     }
