@@ -32,7 +32,6 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws IOException {
-        //TODO -> uri를 어떻게 보내야 이 코드가 잘 동작하는지 테스트(아마 querystring으로 보내야 되는 듯)
         //TODO -> body에 넣어서 보낼 수 있음 . session.getAttributes()
         //ws://localhost:8080/ws/chat?roomId=1 이렇게 하니까 일단 되긴함.
         String json = qs2json(URLDecoder.decode(session.getUri().getQuery(), StandardCharsets.UTF_8));
@@ -46,23 +45,25 @@ public class ChatHandler extends TextWebSocketHandler {
         chatRoomMap.get(roomId).add(session);
 
         log.info("[CONNECT] user successfully connected");
-        session.sendMessage(new TextMessage("Welcome, " + sender));
+        for (WebSocketSession ws : chatRoomMap.get(roomId)) {
+            ws.sendMessage(new TextMessage(sender+"님이 채팅방에 입장하셨습니다."));
+        }
     }
 
     @Override
     //TODO -> 이 로직들에 @Transactional 붙일 수 있을까?? (일부 세션에만 전파될 수도 있으니까)
-    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws IOException, ParseException {
+    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws IOException{
         String payload = textMessage.getPayload();
         log.info("payload : " + payload);
 
         MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
 
         Long roomId = messageRequestDTO.getRoomId();
-        if (!chatRoomMap.get(roomId).isEmpty()) {
+        if (chatRoomMap.get(roomId)!=null) {
             JSONObject jsonObj = jsonToObjectParser(payload);
 
             //일단 이렇게 세션에 sendMessage 하면 채팅이 가는지 확인 -> 포스트맨으로 확인 완료!
-            //TODO -> 원하는 세션에만 전달되는지 확인
+            //TODO -> 원하는 세션에만 전달되는지 확인 - 확인 완료
             //TODO -> 굳이 payload를 json으로 파싱했다가 다시 jsonString으로 파싱할 필요가 있나 확인
 
             //TODO -> https://supawer0728.github.io/2018/03/30/spring-websocket/ 여기 글 보면 다듬을 수 있을지도?
@@ -86,9 +87,9 @@ public class ChatHandler extends TextWebSocketHandler {
         String sender = map.get("memberId");
         chatRoomMap.get(roomId).remove(session);
 
-        log.info("user disconnect success");
+        log.info("[DISCONNECT] user disconnect success");
         for (WebSocketSession ws : chatRoomMap.get(roomId)) { //방에 남아있는 사람에게 GOOD BYE
-            ws.sendMessage(new TextMessage("good bye" + sender));
+            ws.sendMessage(new TextMessage(sender+"님이 채팅방을 나갔습니다."));
         }
     }
 
