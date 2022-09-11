@@ -1,7 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
@@ -32,7 +32,7 @@ public class MessageController {
 
     @PostMapping("/rooms/{roomId}/chats")
     public ResponseEntity<Message> sendMessage(@PathVariable Long roomId,
-        @RequestBody MessageRequestDto messageRequest) {
+        @RequestBody MessageRequestDTO messageRequest) {
         Message message = messageService.registerMessage(roomId, messageRequest);
         return ResponseEntity.created(URI.create("/rooms/" + roomId + "/chats/" + message.getId()))
             .body(message);

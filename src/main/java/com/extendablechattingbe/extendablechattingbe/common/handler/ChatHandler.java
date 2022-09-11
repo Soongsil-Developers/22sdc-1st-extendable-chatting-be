@@ -1,21 +1,16 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
-import com.extendablechattingbe.extendablechattingbe.domain.Message;
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -59,7 +54,7 @@ public class ChatHandler extends TextWebSocketHandler {
         String payload = textMessage.getPayload();
         log.info("payload : " + payload);
 
-        MessageRequestDto messageRequestDto = objectMapper.readValue(payload, MessageRequestDto.class);
+        MessageRequestDTO messageRequestDto = objectMapper.readValue(payload, MessageRequestDTO.class);
 
         Long roomId = messageRequestDto.getRoomId();
 

@@ -4,10 +4,12 @@ import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
-public class MessageRequestDto {
+@ToString
+public class MessageRequestDTO {
 
     private String message;
     private String nickname;
@@ -15,7 +17,7 @@ public class MessageRequestDto {
     private MessageType type;
 
     @Builder
-    public MessageRequestDto(String message, String nickname, Long roomId, MessageType type) {
+    public MessageRequestDTO(String message, String nickname, Long roomId, MessageType type) {
         this.message = message;
         this.nickname = nickname;
         this.roomId = roomId;

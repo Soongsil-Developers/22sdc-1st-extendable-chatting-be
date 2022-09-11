@@ -24,6 +24,18 @@ spring:
     url: ${LOCAL_DATASOURCE_URL}
     username: ${LOCAL_DATASOURCE_USERNAME}
     password: ${LOCAL_DATASOURCE_PASSWORD}
+  kafka:
+    bootstrap-servers: 15.164.21.79:9092
+    consumer:
+      #bootstrap-servers: 15.164.21.79:9092
+      group-id: kafka-one
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      #bootstrap-servers: 15.164.21.79:9092
+      key-serializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-serializer: org.apache.kafka.common.serialization.StringDeserializer
 
 
 logging.level:

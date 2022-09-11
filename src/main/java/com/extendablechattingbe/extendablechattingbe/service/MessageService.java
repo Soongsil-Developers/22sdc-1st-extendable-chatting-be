@@ -8,7 +8,7 @@ import com.extendablechattingbe.extendablechattingbe.common.exception.CustomExce
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
@@ -33,7 +33,7 @@ public class MessageService {
 
 
     @Transactional
-    public Message registerMessage(Long roomId, MessageRequestDto MessageRequestDto) {
+    public Message registerMessage(Long roomId, MessageRequestDTO MessageRequestDto) {
 
         Member member = memberRepository.findByNickname(MessageRequestDto.getNickname())
             .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
