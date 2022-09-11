@@ -34,8 +34,8 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
       #bootstrap-servers: 15.164.21.79:9092
-      key-serializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-serializer: org.apache.kafka.common.serialization.StringDeserializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 
 logging.level:

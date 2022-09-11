@@ -1,2 +1,18 @@
-package com.extendablechattingbe.extendablechattingbe.common;public class KafkaController {
+package com.extendablechattingbe.extendablechattingbe.common;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+public class KafkaController {
+
+    private final KafkaProducer kafkaProducer;
+
+    @PostMapping(value = "/test")
+    public void TestSendMessage(@RequestBody(required = true) String message) {
+        this.kafkaProducer.sendMessage(message);
+    }
 }

@@ -8,7 +8,6 @@ import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
-@ToString
 public class MessageRequestDTO {
 
     private String message;
