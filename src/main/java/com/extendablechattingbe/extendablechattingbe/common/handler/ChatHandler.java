@@ -33,19 +33,20 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws IOException {
         //TODO -> uri를 어떻게 보내야 이 코드가 잘 동작하는지 테스트(아마 querystring으로 보내야 되는 듯)
+        //TODO -> body에 넣어서 보낼 수 있음 . session.getAttributes()
         //ws://localhost:8080/ws/chat?roomId=1 이렇게 하니까 일단 되긴함.
         String json = qs2json(URLDecoder.decode(session.getUri().getQuery(), StandardCharsets.UTF_8));
 
         Map<String, String> map = objectMapper.readValue(json, Map.class);
 
         Long roomId = Long.parseLong(map.get("roomId"));
-        String sender = map.get("userId");
+        String sender = map.get("memberId");
 
         chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
         chatRoomMap.get(roomId).add(session);
 
-        log.info("user connect success");
-        session.sendMessage(new TextMessage("hello" + sender));
+        log.info("[CONNECT] user successfully connected");
+        session.sendMessage(new TextMessage("Welcome, " + sender));
     }
 
     @Override
@@ -54,10 +55,9 @@ public class ChatHandler extends TextWebSocketHandler {
         String payload = textMessage.getPayload();
         log.info("payload : " + payload);
 
-        MessageRequestDTO messageRequestDto = objectMapper.readValue(payload, MessageRequestDTO.class);
+        MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
 
-        Long roomId = messageRequestDto.getRoomId();
-
+        Long roomId = messageRequestDTO.getRoomId();
         if (!chatRoomMap.get(roomId).isEmpty()) {
             JSONObject jsonObj = jsonToObjectParser(payload);
 
@@ -83,14 +83,13 @@ public class ChatHandler extends TextWebSocketHandler {
         Map<String,String> map = objectMapper.readValue(json, Map.class);
 
         Long roomId = Long.parseLong(map.get("roomId"));
-        String sender = map.get("userId");
-
+        String sender = map.get("memberId");
         chatRoomMap.get(roomId).remove(session);
 
         log.info("user disconnect success");
-        session.sendMessage(new TextMessage("good bye" + sender));
-
-        //TODO -> 웹소켓 커넥션 끊을 때마다 IllegalStateException 발생하는데 어떻게 없애지?
+        for (WebSocketSession ws : chatRoomMap.get(roomId)) { //방에 남아있는 사람에게 GOOD BYE
+            ws.sendMessage(new TextMessage("good bye" + sender));
+        }
     }
 
     private String qs2json(String a) {

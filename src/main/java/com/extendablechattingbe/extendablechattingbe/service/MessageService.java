@@ -10,7 +10,7 @@ import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
-import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponse;
+import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.MessageRepository;
@@ -33,19 +33,19 @@ public class MessageService {
 
 
     @Transactional
-    public Message registerMessage(Long roomId, MessageRequestDTO MessageRequestDto) {
+    public Message registerMessage(Long roomId, MessageRequestDTO messageRequestDTO) {
 
-        Member member = memberRepository.findByNickname(MessageRequestDto.getNickname())
+        Member member = memberRepository.findById(messageRequestDTO.getMemberId())
             .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
 
         Room room = roomRepository.findById(roomId)
             .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
 
         Message message = Message.builder()
-            .message(MessageRequestDto.getMessage())
+            .message(messageRequestDTO.getMessage())
             .room(room)
             .member(member)
-            .type(MessageRequestDto.getType())
+            .type(messageRequestDTO.getType())
             .build();
         messageRepository.save(message);
         return message;
@@ -59,7 +59,7 @@ public class MessageService {
             .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
         Page<Message> result = messageRepository.findByRoom(room, request);
 
-        Function<Message, MessageResponse> fn = (entity -> MessageResponse.from(entity));
+        Function<Message, MessageResponseDTO> fn = (entity -> MessageResponseDTO.from(entity));
         return new PageResponse(result, fn);
 
     }
@@ -72,17 +72,11 @@ public class MessageService {
         return;
     }
 
-    public MessageResponse getOne(Long chatId) {
+    public MessageResponseDTO getOne(Long chatId) {
         Message message = messageRepository.findById(chatId)
             .orElseThrow(() -> new CustomException(MESSAGE_NOT_FOUND_ERROR));
 
-        return MessageResponse.builder()
-            .id(message.getId())
-            .message(message.getMessage())
-            .roomId(message.getRoom().getId())
-            .memberId(message.getMember().getId())
-            .type(message.getType())
-            .build();
+        return MessageResponseDTO.from(message);
     }
 
 }

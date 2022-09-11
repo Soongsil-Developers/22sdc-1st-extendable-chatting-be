@@ -1,6 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.common;
 
-import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponse;
+import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class KafkaConsumer {
 
     @KafkaListener(topics = "kafka-chat", groupId = "kafka-one")
-    public void consume(MessageResponse message) {
+    public void consume(String message) {
         log.info(String.format("[Kafka] Consumed message(kafka-chat) : %s", message));
     }
 

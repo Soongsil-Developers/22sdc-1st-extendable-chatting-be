@@ -3,7 +3,7 @@ package com.extendablechattingbe.extendablechattingbe.controller;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
-import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponse;
+import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.service.MessageService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,6 +41,7 @@ public class MessageController {
 
 
     @GetMapping("/rooms/{roomId}/chats")
+
     public ResponseEntity<PageResponse> getMessageList(@PathVariable Long roomId,
         PageRequestDTO requestDTO) {
         PageResponse response = messageService.getMessageList(roomId, requestDTO);
@@ -48,9 +49,9 @@ public class MessageController {
     }
 
     @GetMapping("/rooms/{roomId}/chats/{chatId}")
-    public ResponseEntity<MessageResponse> getMessageOne(@PathVariable("roomId") Long roomId,
-        @PathVariable("chatId") Long chatId) {
-        MessageResponse response = messageService.getOne(chatId);
+    public ResponseEntity<MessageResponseDTO> getMessageOne(@PathVariable("roomId") Long roomId,
+                                                            @PathVariable("chatId") Long chatId) {
+        MessageResponseDTO response = messageService.getOne(chatId);
         return ResponseEntity.ok().body(response);
     }
 

@@ -1,5 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.common;
 
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.core.KafkaTemplate;

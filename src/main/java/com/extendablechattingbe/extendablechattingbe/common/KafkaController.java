@@ -1,5 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.common;
 
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
