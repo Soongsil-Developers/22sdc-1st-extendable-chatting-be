@@ -40,6 +40,8 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
+        System.out.println("========afterConnectionEstablished========");
+
         String json = qs2json(URLDecoder.decode(Objects.requireNonNull(session.getUri()).getQuery(), StandardCharsets.UTF_8));
 
         try {
@@ -50,8 +52,10 @@ public class ChatHandler extends TextWebSocketHandler {
             chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
             chatRoomMap.get(roomId).add(session);
 
-            log.info("user connect success");
-            session.sendMessage(new TextMessage("hello" + sender));
+            log.info("[CONNECT] user successfully connected");
+            for (WebSocketSession ws : chatRoomMap.get(roomId)) {
+                ws.sendMessage(new TextMessage(sender+"님이 채팅방에 입장하셨습니다."));
+            }
 
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -80,6 +84,8 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+        System.out.println("========afterConnectionClosed========");
+
         String json = qs2json(URLDecoder.decode(session.getUri().getQuery(), StandardCharsets.UTF_8));
 
         try {
@@ -89,14 +95,14 @@ public class ChatHandler extends TextWebSocketHandler {
 
             chatRoomMap.get(roomId).remove(session);
 
-            log.info("user disconnect success");
-            session.sendMessage(new TextMessage("good bye" + sender));
+            log.info("[DISCONNECT] user disconnect success");
+            for (WebSocketSession ws : chatRoomMap.get(roomId)) { //방에 남아있는 사람에게 GOOD BYE
+                ws.sendMessage(new TextMessage(sender+"로그아웃하셨습니다."));
+            }
 
         } catch (IOException e) {
             log.error(e.getMessage());
         }
-
-        //TODO -> 웹소켓 커넥션 끊을 때마다 IllegalStateException 발생하는데 어떻게 없애지?
     }
 
     private String qs2json(String a) {
