@@ -46,7 +46,7 @@ public class MemberController {
     @DeleteMapping("/members/{memberId}")
     public ResponseEntity deleteMember(@PathVariable Long memberId) {
         memberService.deleteMember(memberId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/members/{memberId}/rooms/{roomId}")
@@ -79,6 +79,6 @@ public class MemberController {
     public ResponseEntity leaveRoom(@PathVariable("memberId") Long memberId,
         @PathVariable("roomId") Long roomId) {
         memberService.leaveTheRoom(memberId, roomId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

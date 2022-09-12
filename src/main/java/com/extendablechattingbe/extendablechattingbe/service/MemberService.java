@@ -39,8 +39,7 @@ public class MemberService {
     }
 
     public MemberResponse getMemberOne(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
+        Member member = getMemberFromId(memberId);
 
         MemberResponse response = new MemberResponse(member.getId(), member.getNickname());
         return response;
@@ -48,8 +47,7 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
+        Member member = getMemberFromId(memberId);
 
         memberRepository.delete(member);
     }
@@ -81,7 +79,6 @@ public class MemberService {
 
         roomMemberRepository.delete(findRoomMember);
 
-        return;
     }
 
     public List<RoomResponse> findRoomFromMember(Long memberId) {
@@ -109,15 +106,14 @@ public class MemberService {
 
 
     private Member getMemberFromId(Long memberId) {
-        Member member = memberRepository.findById(memberId)
+        return memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
-        return member;
     }
 
     private Room getRoomFromId(Long roomId) {
-        Room room = roomRepository.findById(roomId)
+        return roomRepository.findById(roomId)
             .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
-        return room;
+
     }
 
 

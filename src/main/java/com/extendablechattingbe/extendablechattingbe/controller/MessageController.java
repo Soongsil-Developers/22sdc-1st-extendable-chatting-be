@@ -60,6 +60,6 @@ public class MessageController {
     public ResponseEntity<Object> deleteMessage(@PathVariable("roomId") Long roomId,
         @PathVariable("chatId") Long chatId) {
         messageService.deleteMessage(chatId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

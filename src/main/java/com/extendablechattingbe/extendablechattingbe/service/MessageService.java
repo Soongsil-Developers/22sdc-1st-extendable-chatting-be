@@ -70,7 +70,6 @@ public class MessageService {
         Message message = messageRepository.findById(messageId)
             .orElseThrow(() -> new CustomException(MESSAGE_NOT_FOUND_ERROR));
         messageRepository.delete(message);
-        return;
     }
 
     public MessageResponse getOne(Long chatId) {
