@@ -1,5 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
+import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -11,6 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,9 +23,11 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MESSAGE_BAD_REQUEST_ERROR;
+
 @Component
 @Slf4j
-public class ChatHandler extends TextWebSocketHandler {
+public class WebSocketHandler extends TextWebSocketHandler {
 
     private static final HashMap<Long, Set<WebSocketSession>> chatRoomMap = new HashMap<>();
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -45,9 +49,7 @@ public class ChatHandler extends TextWebSocketHandler {
         chatRoomMap.get(roomId).add(session);
 
         log.info("[CONNECT] user successfully connected");
-        for (WebSocketSession ws : chatRoomMap.get(roomId)) {
-            ws.sendMessage(new TextMessage(sender+"님이 채팅방에 입장하셨습니다."));
-        }
+
     }
 
     @Override
@@ -58,20 +60,7 @@ public class ChatHandler extends TextWebSocketHandler {
 
         MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
 
-        Long roomId = messageRequestDTO.getRoomId();
-        if (chatRoomMap.get(roomId)!=null) {
-            JSONObject jsonObj = jsonToObjectParser(payload);
-
-            //일단 이렇게 세션에 sendMessage 하면 채팅이 가는지 확인 -> 포스트맨으로 확인 완료!
-            //TODO -> 원하는 세션에만 전달되는지 확인 - 확인 완료
-            //TODO -> 굳이 payload를 json으로 파싱했다가 다시 jsonString으로 파싱할 필요가 있나 확인
-
-            //TODO -> https://supawer0728.github.io/2018/03/30/spring-websocket/ 여기 글 보면 다듬을 수 있을지도?
-            // https://daddyprogrammer.org/post/4077/spring-websocket-chatting/
-            for (WebSocketSession ws : chatRoomMap.get(roomId)) {
-                ws.sendMessage(new TextMessage(jsonObj.toJSONString()));
-            }
-        }
+        sendMessage(messageRequestDTO);
 
         //TODO -> DB에 넣어주는 로직 작성해야함.
     }
@@ -118,5 +107,16 @@ public class ChatHandler extends TextWebSocketHandler {
             e.printStackTrace();
         }
         return obj;
+    }
+
+    public void sendMessage(MessageRequestDTO message) {
+        Gson gson = new Gson();
+        for (WebSocketSession ws : chatRoomMap.get(message.getRoomId())) {
+            try {
+                ws.sendMessage(new TextMessage(gson.toJson(message)));
+            } catch (IOException e) {
+                throw new CustomException(MESSAGE_BAD_REQUEST_ERROR);
+            }
+        }
     }
 }

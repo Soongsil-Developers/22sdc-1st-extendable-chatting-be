@@ -1,16 +1,13 @@
 package com.extendablechattingbe.extendablechattingbe.dto.request;
 
-import java.time.LocalDateTime;
-
-import com.extendablechattingbe.extendablechattingbe.domain.Message;
+import java.io.Serializable;
 import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.*;
 
 @Getter
 @NoArgsConstructor
-public class MessageRequestDTO {
+public class MessageRequestDTO implements Serializable {
 
     private String message;
     private MessageType type;
@@ -23,5 +20,15 @@ public class MessageRequestDTO {
         this.type = type;
         this.memberId = memberId;
         this.roomId = roomId;
+    }
+
+    @Override
+    public String toString() {
+        return "MessageRequestDTO{" +
+            "message='" + message + '\'' +
+            ", type=" + type +
+            ", memberId=" + memberId +
+            ", roomId=" + roomId +
+            '}';
     }
 }

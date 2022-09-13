@@ -33,6 +33,7 @@ public enum ResponseMessages {
 	 */
 	//400 BAD REQUEST
 	BAD_REQUEST_ERROR(400, BAD_REQUEST, "잘못된 요청입니다."),
+	MESSAGE_BAD_REQUEST_ERROR(400,BAD_REQUEST,"잘못된 형식의 메시지입니다."),
 
 	//401 UNAUTHORIZED
 	//UNAUTHORIZED_ERROR(401, UNAUTHORIZED, ""),
