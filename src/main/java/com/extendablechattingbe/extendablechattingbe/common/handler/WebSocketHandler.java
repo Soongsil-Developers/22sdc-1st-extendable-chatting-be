@@ -1,9 +1,12 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
+import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,51 +20,65 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MESSAGE_BAD_REQUEST_ERROR;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class WebSocketHandler extends TextWebSocketHandler {
 
     private static final HashMap<Long, Set<WebSocketSession>> chatRoomMap = new HashMap<>();
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final MessageService messageService;
 
-    //TODO -> 예외들 커스텀으로 변경해야 함
+
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws IOException {
+    public void afterConnectionEstablished(WebSocketSession session){
         //TODO -> body에 넣어서 보낼 수 있음 . session.getAttributes()
-        //ws://localhost:8080/ws/chat?roomId=1 이렇게 하니까 일단 되긴함.
-        String json = qs2json(URLDecoder.decode(session.getUri().getQuery(), StandardCharsets.UTF_8));
+        String json = qs2json(URLDecoder.decode(Objects.requireNonNull(session.getUri()).getQuery(), StandardCharsets.UTF_8));
 
-        Map<String, String> map = objectMapper.readValue(json, Map.class);
+        try {
+            Map<String, String> map = objectMapper.readValue(json, Map.class);
+            Long roomId = Long.parseLong(map.get("roomId"));
+            String sender = map.get("memberId");
 
-        Long roomId = Long.parseLong(map.get("roomId"));
-        String sender = map.get("memberId");
+            chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
+            chatRoomMap.get(roomId).add(session);
 
-        chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
-        chatRoomMap.get(roomId).add(session);
+            log.info("[CONNECT] user successfully connected");
 
-        log.info("[CONNECT] user successfully connected");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
 
     }
 
     @Override
     //TODO -> 이 로직들에 @Transactional 붙일 수 있을까?? (일부 세션에만 전파될 수도 있으니까)
-    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws IOException{
+    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage){
         String payload = textMessage.getPayload();
         log.info("payload : " + payload);
+        try {
+            MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
+            // TODO Room.sendMessage(MRDTO, messageService)
+            Long roomId = messageRequestDTO.getRoomId();
 
-        MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
+            messageService.saveMessage(messageRequestDTO);
+            sendMessage(messageRequestDTO);
 
-        sendMessage(messageRequestDTO);
+            if (messageRequestDTO.getType().equals(MessageType.TALK)) {
+                for (WebSocketSession ws : chatRoomMap.get(roomId)) {
+                    ws.sendMessage(new TextMessage(payload));
+                }
+            }
 
-        //TODO -> DB에 넣어주는 로직 작성해야함.
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+
     }
 
     @Override
