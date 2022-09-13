@@ -10,7 +10,6 @@ import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.domain.RoomMember;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MemberRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MemberResponse;
-import com.extendablechattingbe.extendablechattingbe.dto.response.RoomMemberResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomMemberRepository;
@@ -28,7 +27,7 @@ public class MemberService {
 
     private final RoomMemberRepository roomMemberRepository;
     private final MemberRepository memberRepository;
-    private final RoomRepository roomRepository;
+    private final RoomService roomService;
 
 
     @Transactional
@@ -39,7 +38,7 @@ public class MemberService {
     }
 
     public MemberResponse getMemberOne(Long memberId) {
-        Member member = getMemberFromId(memberId);
+        Member member = validateAndFindMemberById(memberId);
 
         MemberResponse response = new MemberResponse(member.getId(), member.getNickname());
         return response;
@@ -47,7 +46,7 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(Long memberId) {
-        Member member = getMemberFromId(memberId);
+        Member member = validateAndFindMemberById(memberId);
 
         memberRepository.delete(member);
     }
@@ -56,9 +55,9 @@ public class MemberService {
     @Transactional
     public RoomMember joinTheRoom(Long memberId, Long roomId) {
 
-        Member member = getMemberFromId(memberId);
+        Member member = validateAndFindMemberById(memberId);
 
-        Room room = getRoomFromId(roomId);
+        Room room = roomService.validateAndFindRoomById(roomId);
 
         RoomMember roomMember = new RoomMember(member, room);
 
@@ -70,9 +69,9 @@ public class MemberService {
     @Transactional
     public void leaveTheRoom(Long memberId, Long roomId) {
 
-        Member member = getMemberFromId(memberId);
+        Member member = validateAndFindMemberById(memberId);
 
-        Room room = getRoomFromId(roomId);
+        Room room = roomService.validateAndFindRoomById(roomId);
 
         RoomMember findRoomMember = roomMemberRepository.findByRoomAndMember(room, member)
             .orElseThrow(() -> new CustomException(ROOM_MEMBER_NOT_FOUND_ERROR));
@@ -83,7 +82,7 @@ public class MemberService {
 
     public List<RoomResponse> findRoomFromMember(Long memberId) {
         List<RoomResponse> roomList = new ArrayList<>();
-        Member member = getMemberFromId(memberId);
+        Member member = validateAndFindMemberById(memberId);
         List<RoomMember> RoomFromMember = roomMemberRepository.findByMember(member);
         RoomFromMember.forEach(roomMember -> {
             roomList.add(
@@ -104,17 +103,8 @@ public class MemberService {
 //        return new RoomMemberResponse(roomMember.getId(), memberId, roomId);
 //    }
 
-
-    private Member getMemberFromId(Long memberId) {
+    public Member validateAndFindMemberById(Long memberId) {
         return memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
     }
-
-    private Room getRoomFromId(Long roomId) {
-        return roomRepository.findById(roomId)
-            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
-
-    }
-
-
 }

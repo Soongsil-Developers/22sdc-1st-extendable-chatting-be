@@ -36,13 +36,13 @@ public class MessageService {
 
     private final ObjectMapper objectMapper;
 
+    private final MemberService memberService;
+    private final RoomService roomService;
+
     @Transactional
     public void saveMessage(MessageRequestDto messageRequestDto) {
-        Member member = memberRepository.findByNickname(messageRequestDto.getNickname())
-            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
-
-        Room room = roomRepository.findById(messageRequestDto.getRoomId())
-            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
+        Member member = memberService.validateAndFindMemberById(messageRequestDto.getMemberId());
+        Room room = roomService.validateAndFindRoomById(messageRequestDto.getRoomId());
 
         Message message = Message.builder()
             .message(messageRequestDto.getMessage())
