@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.BAD_REQUEST_ERROR;
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.INTERNAL_SERVER_ERROR;
 

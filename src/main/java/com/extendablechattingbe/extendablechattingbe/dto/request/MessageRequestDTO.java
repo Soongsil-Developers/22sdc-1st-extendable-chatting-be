@@ -1,9 +1,11 @@
 package com.extendablechattingbe.extendablechattingbe.dto.request;
 
-import java.io.Serializable;
 import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import lombok.*;
+import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
