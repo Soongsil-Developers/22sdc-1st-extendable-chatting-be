@@ -2,8 +2,12 @@ package com.extendablechattingbe.extendablechattingbe.common.handler;
 
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
 import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
+import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.service.MemberService;
 import com.extendablechattingbe.extendablechattingbe.service.MessageService;
+import com.extendablechattingbe.extendablechattingbe.service.RoomService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -23,32 +27,37 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MESSAGE_BAD_REQUEST_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class WebSocketHandler extends TextWebSocketHandler {
 
-    private static final HashMap<Long, Set<WebSocketSession>> chatRoomMap = new HashMap<>();
+    private static final HashMap<Long, Set<WebSocketSession>> chatRoomMap = new HashMap<>();//방 초대된 순간 ~ 방 아예 나가버린 순간,
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final MessageService messageService;
-
-
+    private final MemberService memberService;
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session){
+    public void afterConnectionEstablished(WebSocketSession session){/* sending messages over a WebSocket connection */
         //TODO -> body에 넣어서 보낼 수 있음 . session.getAttributes()
         String json = qs2json(URLDecoder.decode(Objects.requireNonNull(session.getUri()).getQuery(), StandardCharsets.UTF_8));
 
         try {
             Map<String, String> map = objectMapper.readValue(json, Map.class);
             Long roomId = Long.parseLong(map.get("roomId"));
-            String sender = map.get("memberId");
-
+            Long memberId=Long.parseLong(map.get("memberId"));
+            String nickname=memberService.getMemberOne(memberId).getNickname();
+            // 웹소켓 세션 추가
             chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
             chatRoomMap.get(roomId).add(session);
 
             log.info("[CONNECT] user successfully connected");
+            MessageRequestDTO enterMsg=MessageRequestDTO.builder()
+                .message(nickname+"님이 채팅방에 입장하셨습니다.")
+                    .memberId(memberId).roomId(roomId).build();
+            sendMessage(enterMsg);
 
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -59,21 +68,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     //TODO -> 이 로직들에 @Transactional 붙일 수 있을까?? (일부 세션에만 전파될 수도 있으니까)
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage){
-        String payload = textMessage.getPayload();
+        final String payload = textMessage.getPayload();
         log.info("payload : " + payload);
         try {
             MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
-            // TODO Room.sendMessage(MRDTO, messageService)
-            Long roomId = messageRequestDTO.getRoomId();
-
             messageService.saveMessage(messageRequestDTO);
             sendMessage(messageRequestDTO);
-
-            if (messageRequestDTO.getType().equals(MessageType.TALK)) {
-                for (WebSocketSession ws : chatRoomMap.get(roomId)) {
-                    ws.sendMessage(new TextMessage(payload));
-                }
-            }
 
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -82,20 +82,21 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws IOException {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status){
 
         final String json = qs2json(URLDecoder.decode(session.getUri().getQuery(), StandardCharsets.UTF_8));
 
-        Map<String,String> map = objectMapper.readValue(json, Map.class);
+        try {
+            MessageRequestDTO msgDTO = objectMapper.readValue(json, MessageRequestDTO.class);
+            Long roomId = msgDTO.getRoomId();
+            chatRoomMap.get(roomId).remove(session);
 
-        Long roomId = Long.parseLong(map.get("roomId"));
-        String sender = map.get("memberId");
-        chatRoomMap.get(roomId).remove(session);
+        } catch (JsonProcessingException e) {
+            throw new CustomException(MESSAGE_BAD_REQUEST_ERROR);
+        }
+
 
         log.info("[DISCONNECT] user disconnect success");
-        for (WebSocketSession ws : chatRoomMap.get(roomId)) { //방에 남아있는 사람에게 GOOD BYE
-            ws.sendMessage(new TextMessage(sender+"님이 채팅방을 나갔습니다."));
-        }
     }
 
     private String qs2json(String a) {
@@ -114,25 +115,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
         return res.toString();
     }
 
-    private static JSONObject jsonToObjectParser(String jsonStr) {
-        JSONParser parser = new JSONParser();
-        JSONObject obj = null;
-        try {
-            obj = (JSONObject) parser.parse(jsonStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return obj;
-    }
 
     public void sendMessage(MessageRequestDTO message) {
-        Gson gson = new Gson();
-        for (WebSocketSession ws : chatRoomMap.get(message.getRoomId())) {
-            try {
-                ws.sendMessage(new TextMessage(gson.toJson(message)));
-            } catch (IOException e) {
-                throw new CustomException(MESSAGE_BAD_REQUEST_ERROR);
-            }
+        Set<WebSocketSession> sessions= chatRoomMap.get(message.getRoomId());
+        if(sessions==null){
+            throw new CustomException(ROOM_NOT_FOUND_ERROR);
         }
+        sessions.parallelStream().forEach(session -> messageService.sendMessage(session,message));
     }
 }

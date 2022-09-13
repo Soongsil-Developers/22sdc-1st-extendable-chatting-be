@@ -13,15 +13,20 @@ import com.extendablechattingbe.extendablechattingbe.repository.MessageRepositor
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 
+import java.io.IOException;
 import java.util.function.Function;
 
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.*;
+@Log4j2
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -51,25 +56,6 @@ public class MessageService {
         messageRepository.save(message);
     }
 
-// 웹 소켓과 중복
-//    @Transactional
-//    public Message registermessage(Long roomId, MessageRequestDto MessageRequestDto) {
-//
-//        Member member = memberRepository.findByNickname(MessageRequestDto.getNickname())
-//            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
-//
-//        Room room = roomRepository.findById(roomId)
-//            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
-//
-//        Message message = Message.builder()
-//            .message(MessageRequestDto.getMessage())
-//            .room(room)
-//            .member(member)
-//            .type(MessageRequestDto.getType())
-//            .build();
-//        messageRepository.save(message);
-//        return message;
-//    }
 
     public PageResponse getMessagelist(Long roomId, PageRequestDTO pageRequestDTO) {
 
@@ -98,10 +84,12 @@ public class MessageService {
         return MessageResponseDTO.from(message);
     }
 
-//  웹 소켓과 중복
-//    public void sendMessage(Long roomId, Message message) {
-//        Room room = roomRepository.findById(roomId)
-//            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
-//        room.sendMessage(message,objectMapper);
-//    }
+    public<T> void sendMessage(WebSocketSession session, T message) {
+        try{
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+        }catch (IOException e){
+            e.printStackTrace();
+            log.error(e.getMessage(),e);
+        }
+    }
 }
