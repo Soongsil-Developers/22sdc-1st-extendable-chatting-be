@@ -27,7 +27,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
 
 
-    @Transactional(readOnly = false)
+    @Transactional
     public Room register(RoomRequest request) {
         Room room = new Room(request.getRoomName());
         return roomRepository.save(room);
@@ -61,8 +61,6 @@ public class RoomService {
             .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
         roomRepository.delete(deleteRoom);
     }
-
-
 
 
 }

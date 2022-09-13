@@ -21,16 +21,10 @@ public class Member {
 
 
     @Column(unique = true)
-    private String loginId;
-
     private String nickname;
 
-    private String password;
 
-    @Builder
-    public Member(String loginId, String nickname, String password) {
-        this.loginId = loginId;
+    public Member(String nickname) {
         this.nickname = nickname;
-        this.password = password;
     }
 }
