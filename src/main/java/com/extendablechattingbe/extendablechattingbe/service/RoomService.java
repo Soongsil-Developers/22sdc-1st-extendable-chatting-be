@@ -62,5 +62,8 @@ public class RoomService {
         roomRepository.delete(deleteRoom);
     }
 
-
+    public Room validateAndFindRoomById(Long roomId) {
+        return roomRepository.findById(roomId)
+            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
+    }
 }

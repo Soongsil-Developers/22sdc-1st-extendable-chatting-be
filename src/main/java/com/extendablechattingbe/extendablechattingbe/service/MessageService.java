@@ -9,6 +9,8 @@ import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
+
+import lombok.RequiredArgsConstructor;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
@@ -28,9 +30,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class MessageService {
 
-    private final MessageRepository messageRepository;
+    private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
+    private final MessageRepository messageRepository;
+
     private final ObjectMapper objectMapper;
+
+    private final MemberService memberService;
+    private final RoomService roomService;
+
+    @Transactional
+    public void saveMessage(MessageRequestDto messageRequestDto) {
+        Member member = memberService.validateAndFindMemberById(messageRequestDto.getMemberId());
+        Room room = roomService.validateAndFindRoomById(messageRequestDto.getRoomId());
+
+        Message message = Message.builder()
+            .message(messageRequestDto.getMessage())
+            .room(room)
+            .member(member)
+            .type(messageRequestDto.getType())
+            .build();
+
+        messageRepository.save(message);
+    }
 
 // 웹 소켓과 중복
 //    @Transactional
@@ -85,7 +107,7 @@ public class MessageService {
             .build();
     }
 
-//  웹 소켓과 중복    
+//  웹 소켓과 중복
 //    public void sendMessage(Long roomId, Message message) {
 //        Room room = roomRepository.findById(roomId)
 //            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));

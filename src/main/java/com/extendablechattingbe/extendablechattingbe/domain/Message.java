@@ -35,7 +35,6 @@ public class Message {
     @CreatedDate
     private LocalDateTime createdDate;
 
-
     @Builder
     public Message(String message, Member member,
         MessageType type, Room room) {
