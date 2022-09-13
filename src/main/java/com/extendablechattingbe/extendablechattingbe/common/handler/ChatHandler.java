@@ -1,6 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
+import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import com.extendablechattingbe.extendablechattingbe.service.MessageService;
 import com.fasterxml.jackson.core.JsonParser;
@@ -70,11 +71,14 @@ public class ChatHandler extends TextWebSocketHandler {
 
         try {
             MessageRequestDto messageRequestDto = objectMapper.readValue(payload, MessageRequestDto.class);
+            Long roomId = messageRequestDto.getRoomId();
+
             messageService.saveMessage(messageRequestDto);
 
-            Long roomId = messageRequestDto.getRoomId();
-            for (WebSocketSession ws : chatRoomMap.get(roomId)) {
-                ws.sendMessage(new TextMessage(payload));
+            if (messageRequestDto.getType().equals(MessageType.TALK)) {
+                for (WebSocketSession ws : chatRoomMap.get(roomId)) {
+                    ws.sendMessage(new TextMessage(payload));
+                }
             }
 
         } catch (IOException e) {
