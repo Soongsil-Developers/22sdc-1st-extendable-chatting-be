@@ -48,14 +48,14 @@ public class ChatHandler extends TextWebSocketHandler {
         try {
             Map<String, String> map = objectMapper.readValue(json, Map.class);
             Long roomId = Long.parseLong(map.get("roomId"));
-            String sender = map.get("sender");
+            String userId = map.get("userId");
 
             chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
             chatRoomMap.get(roomId).add(session);
 
             log.info("[CONNECT] user successfully connected");
             for (WebSocketSession ws : chatRoomMap.get(roomId)) {
-                ws.sendMessage(new TextMessage(sender+"님이 채팅방에 입장하셨습니다."));
+                ws.sendMessage(new TextMessage(userId+"님이 채팅방에 입장하셨습니다."));
             }
 
         } catch (IOException e) {
@@ -95,13 +95,13 @@ public class ChatHandler extends TextWebSocketHandler {
         try {
             Map<String, String> map = objectMapper.readValue(json, Map.class);
             Long roomId = Long.parseLong(map.get("roomId"));
-            String sender = map.get("userId");
+            String userId = map.get("userId");
 
             chatRoomMap.get(roomId).remove(session);
 
             log.info("[DISCONNECT] user disconnect success");
             for (WebSocketSession ws : chatRoomMap.get(roomId)) { //방에 남아있는 사람에게 GOOD BYE
-                ws.sendMessage(new TextMessage(sender+"로그아웃하셨습니다."));
+                ws.sendMessage(new TextMessage(userId+"로그아웃하셨습니다."));
             }
 
         } catch (IOException e) {
