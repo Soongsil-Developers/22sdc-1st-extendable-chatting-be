@@ -5,7 +5,6 @@ import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
-
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
@@ -13,8 +12,6 @@ import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository
 import com.extendablechattingbe.extendablechattingbe.repository.MessageRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.function.Function;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,10 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-
 import java.io.IOException;
+import java.util.function.Function;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.*;
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MESSAGE_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
 @Slf4j
 @Service
 @RequiredArgsConstructor

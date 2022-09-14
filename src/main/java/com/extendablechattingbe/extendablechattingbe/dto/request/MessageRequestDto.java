@@ -5,11 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Getter
 @NoArgsConstructor
-public class MessageRequestDTO implements Serializable {
+public class MessageRequestDTO {
 
     private String message;
     private MessageType type;

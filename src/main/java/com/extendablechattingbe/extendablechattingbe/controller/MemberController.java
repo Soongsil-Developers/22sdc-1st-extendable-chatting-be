@@ -7,12 +7,12 @@ import com.extendablechattingbe.extendablechattingbe.dto.response.MemberResponse
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.List;
 
 
 /**
