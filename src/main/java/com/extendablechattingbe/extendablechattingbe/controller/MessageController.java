@@ -26,20 +26,7 @@ public class MessageController {
     private final MessageService messageService;
 
 
-//    웹 소켓으로 처리
-//    @PostMapping("/rooms/{roomId}/chats")
-//    public ResponseEntity<Message> sendmessage(@PathVariable Long roomId,
-//        @RequestBody MessageRequestDto messageRequest) {
-//        Message message = messageService.registermessage(roomId, messageRequest);
-//        messageService.sendMessage(roomId,message);
-//        return ResponseEntity.created(URI.create("/rooms/" + roomId + "/chats/" + message.getId()))
-//            .body(message);
-//
-//    }
-
-
     @GetMapping("/rooms/{roomId}/chats")
-
     public ResponseEntity<PageResponse> getMessageList(@PathVariable Long roomId,
         PageRequestDTO requestDTO) {
         PageResponse response = messageService.getMessagelist(roomId, requestDTO);
@@ -55,9 +42,11 @@ public class MessageController {
 
 
     @DeleteMapping("/rooms/{roomId}/chats/{chatId}")
-    public ResponseEntity<Object> DeleteMessage(@PathVariable("roomId") Long roomId,
+    public ResponseEntity<Object> deleteMessage(@PathVariable("roomId") Long roomId,
         @PathVariable("chatId") Long chatId) {
         messageService.deleteMessage(chatId);
-        return ResponseEntity.ok().build();
+
+        return ResponseEntity.noContent().build();
+
     }
 }

@@ -5,6 +5,7 @@ import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
@@ -12,6 +13,8 @@ import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository
 import com.extendablechattingbe.extendablechattingbe.repository.MessageRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.function.Function;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -38,13 +41,14 @@ public class MessageService {
 
     private final ObjectMapper objectMapper;
 
+
+    private final MemberService memberService;
+    private final RoomService roomService;
+
     @Transactional
     public void saveMessage(MessageRequestDTO messageRequestDTO) {
-        Member member = memberRepository.findById(messageRequestDTO.getMemberId())
-            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
-
-        Room room = roomRepository.findById(messageRequestDTO.getRoomId())
-            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
+        Member member = memberService.validateAndFindMemberById(messageRequestDTO.getMemberId());
+        Room room = roomService.validateAndFindRoomById(messageRequestDTO.getRoomId());
 
         Message message = Message.builder()
             .message(messageRequestDTO.getMessage())
@@ -55,6 +59,7 @@ public class MessageService {
 
         messageRepository.save(message);
     }
+
 
 
     public PageResponse getMessagelist(Long roomId, PageRequestDTO pageRequestDTO) {
@@ -92,4 +97,5 @@ public class MessageService {
             log.error(e.getMessage(),e);
         }
     }
+
 }
