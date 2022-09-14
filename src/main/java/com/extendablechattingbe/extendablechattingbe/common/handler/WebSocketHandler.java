@@ -1,20 +1,13 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
-import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
-import com.extendablechattingbe.extendablechattingbe.domain.Room;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.service.MemberService;
 import com.extendablechattingbe.extendablechattingbe.service.MessageService;
-import com.extendablechattingbe.extendablechattingbe.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -28,6 +21,8 @@ import java.util.*;
 
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MESSAGE_BAD_REQUEST_ERROR;
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.domain.MessageType.ENTER;
+import static com.extendablechattingbe.extendablechattingbe.domain.MessageType.EXIT;
 
 @Component
 @RequiredArgsConstructor
@@ -55,9 +50,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
             log.info("[CONNECT] user successfully connected");
             MessageRequestDTO enterMsg=MessageRequestDTO.builder()
-                .message(nickname+"님이 채팅방에 입장하셨습니다.")
+                .message(nickname+"님이 들어왔습니다.")
+                .type(ENTER)
                     .memberId(memberId).roomId(roomId).build();
-            sendMessage(enterMsg);
+            sendSocketMessage(enterMsg);
 
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -73,7 +69,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         try {
             MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
             messageService.saveMessage(messageRequestDTO);
-            sendMessage(messageRequestDTO);
+            sendSocketMessage(messageRequestDTO);
 
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -89,8 +85,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
         try {
             MessageRequestDTO msgDTO = objectMapper.readValue(json, MessageRequestDTO.class);
             Long roomId = msgDTO.getRoomId();
+            Long memberId=msgDTO.getMemberId();
+            String nickname=memberService.getMemberOne(memberId).getNickname();
             chatRoomMap.get(roomId).remove(session);
-
+            MessageRequestDTO exitMsg=MessageRequestDTO.builder()
+                .message(nickname+"님이 나갔습니다.")
+                .type(EXIT)
+                .memberId(memberId).roomId(roomId).build();
+            sendSocketMessage(exitMsg);
         } catch (JsonProcessingException e) {
             throw new CustomException(MESSAGE_BAD_REQUEST_ERROR);
         }
@@ -116,7 +118,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
 
-    public void sendMessage(MessageRequestDTO message) {
+    public void sendSocketMessage(MessageRequestDTO message) {
         Set<WebSocketSession> sessions= chatRoomMap.get(message.getRoomId());
         if(sessions==null){
             throw new CustomException(ROOM_NOT_FOUND_ERROR);
