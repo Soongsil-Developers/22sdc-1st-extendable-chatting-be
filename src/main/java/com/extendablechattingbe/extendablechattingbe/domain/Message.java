@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
+@ToString(exclude = {"room", "member"})
 public class Message {
 
     @Id
@@ -34,4 +35,12 @@ public class Message {
     @CreatedDate
     private LocalDateTime createdDate;
 
+    @Builder
+    public Message(String message, Member member,
+        MessageType type, Room room) {
+        this.message = message;
+        this.member = member;
+        this.type = type;
+        this.room = room;
+    }
 }

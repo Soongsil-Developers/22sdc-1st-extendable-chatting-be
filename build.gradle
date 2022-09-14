@@ -40,6 +40,10 @@ dependencies {
 
 	//jackson objectmapper
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+
+	//simple json parser
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
 }
 
 tasks.named('test') {
