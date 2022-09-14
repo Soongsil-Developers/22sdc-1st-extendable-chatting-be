@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MEMBER_NOT_FOUND_ERROR;
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_MEMBER_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.MEMBER_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.ROOM_MEMBER_NOT_FOUND_ERROR;
 
 @Service
 @RequiredArgsConstructor

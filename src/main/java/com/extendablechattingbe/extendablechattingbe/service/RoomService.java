@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Function;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.ROOM_NOT_FOUND_ERROR;
 
 
 @Service

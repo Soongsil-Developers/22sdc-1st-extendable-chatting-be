@@ -19,8 +19,8 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MESSAGE_BAD_REQUEST_ERROR;
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.MESSAGE_BAD_REQUEST_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.ROOM_NOT_FOUND_ERROR;
 import static com.extendablechattingbe.extendablechattingbe.domain.MessageType.ENTER;
 import static com.extendablechattingbe.extendablechattingbe.domain.MessageType.EXIT;
 

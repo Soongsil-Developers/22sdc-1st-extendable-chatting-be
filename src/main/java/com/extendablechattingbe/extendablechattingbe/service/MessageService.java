@@ -24,8 +24,8 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MESSAGE_NOT_FOUND_ERROR;
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.MESSAGE_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.ROOM_NOT_FOUND_ERROR;
 @Slf4j
 @Service
 @RequiredArgsConstructor

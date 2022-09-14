@@ -9,7 +9,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @Getter
 @AllArgsConstructor
-public enum ResponseMessages {
+public enum CustomMessages {
 
 	/**
 	 * Success Message
