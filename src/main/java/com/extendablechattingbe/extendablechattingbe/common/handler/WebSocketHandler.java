@@ -1,7 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import com.extendablechattingbe.extendablechattingbe.service.MemberService;
 import com.extendablechattingbe.extendablechattingbe.service.MessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,7 +49,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             chatRoomMap.get(roomId).add(session);
 
             //log.info("[CONNECT] user successfully connected");
-            MessageRequestDTO enterMsg=MessageRequestDTO.builder()
+            MessageRequestDto enterMsg= MessageRequestDto.builder()
                 .message(nickname+"님이 들어왔습니다.")
                 .type(ENTER)
                     .memberId(memberId).roomId(roomId).build();
@@ -67,7 +67,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         final String payload = textMessage.getPayload();
         //log.info("payload : " + payload);
         try {
-            MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
+            MessageRequestDto messageRequestDTO = objectMapper.readValue(payload, MessageRequestDto.class);
             messageService.saveMessage(messageRequestDTO);
             sendSocketMessage(messageRequestDTO);
 
@@ -83,12 +83,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
         final String json = qs2json(URLDecoder.decode(session.getUri().getQuery(), StandardCharsets.UTF_8));
 
         try {
-            MessageRequestDTO msgDTO = objectMapper.readValue(json, MessageRequestDTO.class);
+            MessageRequestDto msgDTO = objectMapper.readValue(json, MessageRequestDto.class);
             Long roomId = msgDTO.getRoomId();
             Long memberId=msgDTO.getMemberId();
             String nickname=memberService.getMemberOne(memberId).getNickname();
             chatRoomMap.get(roomId).remove(session);
-            MessageRequestDTO exitMsg=MessageRequestDTO.builder()
+            MessageRequestDto exitMsg= MessageRequestDto.builder()
                 .message(nickname+"님이 나갔습니다.")
                 .type(EXIT)
                 .memberId(memberId).roomId(roomId).build();
@@ -118,7 +118,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
 
-    public void sendSocketMessage(MessageRequestDTO message) {
+    public void sendSocketMessage(MessageRequestDto message) {
         Set<WebSocketSession> sessions= chatRoomMap.get(message.getRoomId());
         if(sessions==null){
             throw new CustomException(ROOM_NOT_FOUND_ERROR);

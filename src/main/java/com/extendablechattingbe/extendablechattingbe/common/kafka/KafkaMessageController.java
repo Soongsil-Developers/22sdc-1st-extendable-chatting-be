@@ -1,6 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.common.kafka;
 
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +13,7 @@ public class KafkaMessageController {
     private final KafkaProducer kafkaProducer;
 
     @PostMapping(value = "/chat")
-    public void TestSendMessage(@RequestBody(required = true) MessageRequestDTO message) {
+    public void TestSendMessage(@RequestBody(required = true) MessageRequestDto message) {
         this.kafkaProducer.sendMessage(message);
     }
 

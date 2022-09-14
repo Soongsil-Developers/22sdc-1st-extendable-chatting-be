@@ -1,6 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.common.kafka;
 
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ public class ProducerConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     String KAFKA_BROKER="";
     @Bean
-    public ProducerFactory<String, MessageRequestDTO> producerFactory() {
+    public ProducerFactory<String, MessageRequestDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigurations());
     }
 
@@ -34,7 +34,7 @@ public class ProducerConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, MessageRequestDTO> kafkaTemplate() {
+    public KafkaTemplate<String, MessageRequestDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

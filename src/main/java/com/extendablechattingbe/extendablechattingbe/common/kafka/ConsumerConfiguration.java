@@ -1,6 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.common.kafka;
 
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,15 +23,15 @@ public class ConsumerConfiguration {
     @Value("${spring.kafka.consumer.group-id}")
     String GROUP_ID="";
     @Bean
-    ConcurrentKafkaListenerContainerFactory<String, MessageRequestDTO> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, MessageRequestDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    ConcurrentKafkaListenerContainerFactory<String, MessageRequestDto> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, MessageRequestDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, MessageRequestDTO> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), new StringDeserializer(), new JsonDeserializer<>(MessageRequestDTO.class));
+    public ConsumerFactory<String, MessageRequestDto> consumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), new StringDeserializer(), new JsonDeserializer<>(MessageRequestDto.class));
     }
 
     @Bean

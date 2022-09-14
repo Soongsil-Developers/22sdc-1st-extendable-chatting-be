@@ -1,7 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.common.kafka;
 
 import com.extendablechattingbe.extendablechattingbe.common.handler.WebSocketHandler;
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,7 +14,7 @@ public class KafkaConsumer {
     private WebSocketHandler webSocketHandler;
 
     @KafkaListener(topics = "kafka-chat", groupId = "kafka-one")
-    public void consume(MessageRequestDTO message) {
+    public void consume(MessageRequestDto message) {
         //log.info(String.format("[Kafka] Consumed message(kafka-chat) : %s", message));
         webSocketHandler.sendSocketMessage(message);
     }

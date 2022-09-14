@@ -1,7 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.common.handler;
 
 import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import com.extendablechattingbe.extendablechattingbe.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +61,7 @@ public class ChatHandler extends TextWebSocketHandler {
         //log.info("\npayload : " + payload);
 
         try {
-            MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
+            MessageRequestDto messageRequestDTO = objectMapper.readValue(payload, MessageRequestDto.class);
             Long roomId = messageRequestDTO.getRoomId();
 
             messageService.saveMessage(messageRequestDTO);

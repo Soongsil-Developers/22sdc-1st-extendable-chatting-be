@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MessageRequestDTO {
+public class MessageRequestDto {
 
     private String message;
     private MessageType type;
@@ -15,7 +15,7 @@ public class MessageRequestDTO {
     private Long roomId;
 
     @Builder
-    public MessageRequestDTO(String message, MessageType type, Long memberId, Long roomId) {
+    public MessageRequestDto(String message, MessageType type, Long memberId, Long roomId) {
         this.message = message;
         this.type = type;
         this.memberId = memberId;

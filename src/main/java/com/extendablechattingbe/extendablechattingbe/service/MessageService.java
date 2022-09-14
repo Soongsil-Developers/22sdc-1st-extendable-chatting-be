@@ -4,7 +4,7 @@ import com.extendablechattingbe.extendablechattingbe.common.exception.CustomExce
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
@@ -43,7 +43,7 @@ public class MessageService {
     private final RoomService roomService;
 
     @Transactional
-    public void saveMessage(MessageRequestDTO messageRequestDTO) {
+    public void saveMessage(MessageRequestDto messageRequestDTO) {
         Member member = memberService.validateAndFindMemberById(messageRequestDTO.getMemberId());
         Room room = roomService.validateAndFindRoomById(messageRequestDTO.getRoomId());
 

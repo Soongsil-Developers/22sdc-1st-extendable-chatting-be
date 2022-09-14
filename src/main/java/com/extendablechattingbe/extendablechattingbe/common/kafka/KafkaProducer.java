@@ -1,6 +1,6 @@
 package com.extendablechattingbe.extendablechattingbe.common.kafka;
 
-import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,9 +13,9 @@ public class KafkaProducer {
 
     private String TOPIC="kafka-chat";
 
-    private final KafkaTemplate<String, MessageRequestDTO> kafkaTemplate;
+    private final KafkaTemplate<String, MessageRequestDto> kafkaTemplate;
 
-    public void sendMessage(MessageRequestDTO message) {
+    public void sendMessage(MessageRequestDto message) {
         //log.info(String.format("[Kafka] Produce message(kafka-chat) : %s", message));
         this.kafkaTemplate.send(TOPIC, message);
     }
