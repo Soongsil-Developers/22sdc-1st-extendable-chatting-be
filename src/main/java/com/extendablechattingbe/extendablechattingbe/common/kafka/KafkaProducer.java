@@ -16,7 +16,7 @@ public class KafkaProducer {
     private final KafkaTemplate<String, MessageRequestDTO> kafkaTemplate;
 
     public void sendMessage(MessageRequestDTO message) {
-        log.info(String.format("[Kafka] Produce message(kafka-chat) : %s", message));
+        //log.info(String.format("[Kafka] Produce message(kafka-chat) : %s", message));
         this.kafkaTemplate.send(TOPIC, message);
     }
 }

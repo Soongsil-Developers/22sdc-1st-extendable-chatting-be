@@ -48,7 +48,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
             chatRoomMap.get(roomId).add(session);
 
-            log.info("[CONNECT] user successfully connected");
+            //log.info("[CONNECT] user successfully connected");
             MessageRequestDTO enterMsg=MessageRequestDTO.builder()
                 .message(nickname+"님이 들어왔습니다.")
                 .type(ENTER)
@@ -56,7 +56,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             sendSocketMessage(enterMsg);
 
         } catch (IOException e) {
-            log.error(e.getMessage());
+            //log.error(e.getMessage());
         }
 
     }
@@ -65,14 +65,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
     //TODO -> 이 로직들에 @Transactional 붙일 수 있을까?? (일부 세션에만 전파될 수도 있으니까)
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage){
         final String payload = textMessage.getPayload();
-        log.info("payload : " + payload);
+        //log.info("payload : " + payload);
         try {
             MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
             messageService.saveMessage(messageRequestDTO);
             sendSocketMessage(messageRequestDTO);
 
         } catch (IOException e) {
-            log.error(e.getMessage());
+            //log.error(e.getMessage());
         }
 
     }
@@ -98,7 +98,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
 
 
-        log.info("[DISCONNECT] user disconnect success");
+        //log.info("[DISCONNECT] user disconnect success");
     }
 
     private String qs2json(String a) {

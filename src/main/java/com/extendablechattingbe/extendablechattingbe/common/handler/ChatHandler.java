@@ -48,13 +48,13 @@ public class ChatHandler extends TextWebSocketHandler {
             chatRoomMap.computeIfAbsent(roomId, k -> new HashSet<>());
             chatRoomMap.get(roomId).add(session);
 
-            log.info("[CONNECT] user successfully connected");
+            //log.info("[CONNECT] user successfully connected");
             for (WebSocketSession ws : chatRoomMap.get(roomId)) {
                 ws.sendMessage(new TextMessage(userId+"님이 채팅방에 입장하셨습니다."));
             }
 
         } catch (IOException e) {
-            log.error(e.getMessage());
+            //log.error(e.getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ public class ChatHandler extends TextWebSocketHandler {
     @Transactional
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) {
         String payload = textMessage.getPayload();
-        log.info("\npayload : " + payload);
+        //log.info("\npayload : " + payload);
 
         try {
             MessageRequestDTO messageRequestDTO = objectMapper.readValue(payload, MessageRequestDTO.class);
@@ -77,7 +77,7 @@ public class ChatHandler extends TextWebSocketHandler {
             }
 
         } catch (IOException e) {
-            log.error(e.getMessage());
+            //log.error(e.getMessage());
         }
     }
 
@@ -94,13 +94,13 @@ public class ChatHandler extends TextWebSocketHandler {
 
             chatRoomMap.get(roomId).remove(session);
 
-            log.info("[DISCONNECT] user disconnect success");
+            //log.info("[DISCONNECT] user disconnect success");
             for (WebSocketSession ws : chatRoomMap.get(roomId)) { //방에 남아있는 사람에게 GOOD BYE
                 ws.sendMessage(new TextMessage(userId+"로그아웃하셨습니다."));
             }
 
         } catch (IOException e) {
-            log.error(e.getMessage());
+            //log.error(e.getMessage());
         }
     }
 
