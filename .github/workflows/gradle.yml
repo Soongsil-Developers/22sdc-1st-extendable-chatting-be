@@ -30,3 +30,12 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
+    - name: Set Yaml
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ./src/main/resources/application-prod.yml
+      env:
+        spring.datasource.url: ${{ secrets.PROD_DATASOURCE_URL }}
+        spring.datasource.username: ${{ secrets.PROD_DATASOURCE_USERNAME }}
+        spring.datasource.password: ${{ secrets.PROD_DATASOURCE_PASSWORD }}
+        spring.kafka.bootstrap-servers: ${{ secrets.KAFKA_SERVER_IP }}
