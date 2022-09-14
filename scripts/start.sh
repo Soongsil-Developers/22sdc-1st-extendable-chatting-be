@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME=exchat
+PROJECT_NAME=extendablechattingbe
 PROJECT_ROOT="/home/ubuntu/app"
 JAR_FILE="$PROJECT_ROOT/spring-webapp.jar"
 
