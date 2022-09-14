@@ -2,12 +2,12 @@ package com.extendablechattingbe.extendablechattingbe.common.kafka;
 
 import com.extendablechattingbe.extendablechattingbe.common.handler.WebSocketHandler;
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-@Log4j2
+@Slf4j
 @Service
 public class KafkaConsumer {
     @Autowired

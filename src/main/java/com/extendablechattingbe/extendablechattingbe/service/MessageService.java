@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.function.Function;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,10 +26,9 @@ import org.springframework.web.socket.WebSocketSession;
 
 
 import java.io.IOException;
-import java.util.function.Function;
 
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.*;
-@Log4j2
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

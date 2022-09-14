@@ -2,11 +2,11 @@ package com.extendablechattingbe.extendablechattingbe.common.kafka;
 
 import com.extendablechattingbe.extendablechattingbe.dto.request.MessageRequestDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-@Log4j2
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class KafkaProducer {
