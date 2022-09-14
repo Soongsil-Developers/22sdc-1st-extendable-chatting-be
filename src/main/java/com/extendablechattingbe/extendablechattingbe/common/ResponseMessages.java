@@ -44,6 +44,8 @@ public enum ResponseMessages {
 	//NOT_FOUND_ERROR(404, NOT_FOUND, ""),
 	MEMBER_NOT_FOUND_ERROR(404, NOT_FOUND,"해당 멤버는 존재하지 않습니다."),
 	ROOM_NOT_FOUND_ERROR(404, NOT_FOUND,"해당 방은 존재하지 않습니다."),
+	MESSAGE_NOT_FOUND_ERROR(404,NOT_FOUND,"해당 메세지는 존재하지 않습니다."),
+	ROOM_MEMBER_NOT_FOUND_ERROR(404,NOT_FOUND,"해당 룸멤버는 존재하지 않습니다."),
 
 	//500 INTERNAL SERVER ERROR
 	INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다."),

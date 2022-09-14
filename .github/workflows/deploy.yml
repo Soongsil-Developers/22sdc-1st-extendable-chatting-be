@@ -3,7 +3,7 @@ name: Deploy to Amazon EC2
 on:
   push:
     branches:
-      - main
+      - dev
 
 # 본인이 설정한 값을 여기서 채워넣습니다.
 # 리전, 버킷 이름, CodeDeploy 앱 이름, CodeDeploy 배포 그룹 이름
@@ -65,3 +65,14 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
           --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
+
+    # (7) 동적으로 환경 변수 삽입
+    - name: Set Yaml
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ./src/main/resources/application-prod.yml
+      env:
+        spring.datasource.url: ${{ secrets.PROD_DATASOURCE_URL }}
+        spring.datasource.username: ${{ secrets.PROD_DATASOURCE_USERNAME }}
+        spring.datasource.password: ${{ secrets.PROD_DATASOURCE_PASSWORD }}
+        spring.kafka.bootstrap-servers: ${{ secrets.KAFKA_SERVER_IP }}

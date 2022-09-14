@@ -1,7 +1,5 @@
 package com.extendablechattingbe.extendablechattingbe.service;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.*;
-
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
@@ -18,7 +16,6 @@ import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Function;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +23,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MEMBER_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -37,7 +38,7 @@ public class RoomService {
     private final MessageRepository messageRepository;
 
 
-    @Transactional(readOnly = false)
+    @Transactional
     public Room register(RoomRequest request) {
         Room room = new Room(request.getRoomName());
         return roomRepository.save(room);
@@ -72,6 +73,11 @@ public class RoomService {
         roomRepository.delete(deleteRoom);
     }
 
+    public Room validateAndFindRoomById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
+    }
+
     public PageResponse getMessageHistory(Long roomId, Long memberId, PageRequestDTO pageRequest) {
         Member member = getMember(memberId);
         Room room = getRoom(roomId);
@@ -89,11 +95,11 @@ public class RoomService {
 
     private Member getMember(Long id) {
         return memberRepository.findById(id)
-            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
     }
 
     private Room getRoom(Long id) {
         return roomRepository.findById(id)
-            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
     }
 }
