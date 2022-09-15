@@ -2,43 +2,36 @@ package com.extendablechattingbe.extendablechattingbe.dto.response;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.MessageType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
-@ToString
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PRIVATE)
 public class MessageResponse {
-    private Long id;
 
-    private String message;
+    private final Long id;
+    private final String message;
+    private final MessageType type;
+    private final Long memberId;
+    private final Long roomId;
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "yyyy-MM-dd HH:mm:ss",
+            locale = "Asia/Seoul"
+    )
+    private final LocalDateTime createDate;
 
-    private Long roomId;
-
-    private Long memberId;
-
-    private MessageType type;
-
-    @Builder
-    public MessageResponse(Long id, String message, Long roomId, Long memberId,
-        MessageType type) {
-        this.id = id;
-        this.message = message;
-        this.roomId = roomId;
-        this.memberId = memberId;
-        this.type = type;
-    }
-
-
-
-
-    public static MessageResponse from(Message message){
+    public static MessageResponse from(Message message) {
         return MessageResponse.builder()
-            .id(message.getId())
-            .message(message.getMessage())
-            .roomId(message.getRoom().getId())
-            .memberId(message.getMember().getId())
-            .type(message.getType())
-            .build();
+                .id(message.getId())
+                .message(message.getMessage())
+                .type(message.getType())
+                .memberId(message.getMember().getId())
+                .roomId(message.getRoom().getId())
+                .createDate(message.getCreatedDate())
+                .build();
     }
 }

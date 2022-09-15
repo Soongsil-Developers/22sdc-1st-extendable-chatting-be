@@ -30,12 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class MessageService {
 
-    private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
     private final MessageRepository messageRepository;
-
-    private final ObjectMapper objectMapper;
-
     private final MemberService memberService;
     private final RoomService roomService;
 
@@ -74,7 +70,7 @@ public class MessageService {
 //        return message;
 //    }
 
-    public PageResponse getMessagelist(Long roomId, PageRequestDTO pageRequestDTO) {
+    public PageResponse getMessages(Long roomId, PageRequestDTO pageRequestDTO) {
 
         PageRequest request = PageRequest.of(pageRequestDTO.getPage() - 1,
             pageRequestDTO.getSize());
@@ -98,13 +94,7 @@ public class MessageService {
         Message message = messageRepository.findById(chatId)
             .orElseThrow(() -> new CustomException(MESSAGE_NOT_FOUND_ERROR));
 
-        return MessageResponse.builder()
-            .id(message.getId())
-            .message(message.getMessage())
-            .roomId(message.getRoom().getId())
-            .memberId(message.getMember().getId())
-            .type(message.getType())
-            .build();
+        return MessageResponse.from(message);
     }
 
 //  웹 소켓과 중복

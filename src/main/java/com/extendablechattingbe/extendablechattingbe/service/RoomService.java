@@ -1,10 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.service;
 
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
-import com.extendablechattingbe.extendablechattingbe.domain.Member;
-import com.extendablechattingbe.extendablechattingbe.domain.Message;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
-import com.extendablechattingbe.extendablechattingbe.dto.response.MessageResponseDTO;
 import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.MessageRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
@@ -13,8 +10,6 @@ import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MEMBER_NOT_FOUND_ERROR;
 import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
 
 
@@ -34,9 +28,6 @@ import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessa
 public class RoomService {
 
     private final RoomRepository roomRepository;
-    private final MemberRepository memberRepository;
-    private final MessageRepository messageRepository;
-
 
     @Transactional
     public Room register(RoomRequest request) {
