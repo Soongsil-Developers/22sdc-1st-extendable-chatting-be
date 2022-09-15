@@ -77,29 +77,4 @@ public class RoomService {
         return roomRepository.findById(roomId)
                 .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
     }
-
-    public PageResponse getMessageHistory(Long roomId, Long memberId, PageRequestDTO pageRequest) {
-        Member member = getMember(memberId);
-        Room room = getRoom(roomId);
-        Pageable pageable = PageRequest.of(pageRequest.getPage() - 1, pageRequest.getSize(), Sort.by("id").descending());
-        Optional<LocalDateTime> optionalEnterDate = memberRepository.findEnterDate(room, member);
-
-        if (optionalEnterDate.isPresent()) {  // == 이전 방문 이력이 있는 사용자
-            LocalDateTime enterDate = optionalEnterDate.get();
-            Page<Message> result = messageRepository.findAllByEnterDate(room, enterDate, pageable);
-            Function<Message, MessageResponseDTO> fn = (entity -> MessageResponseDTO.from(entity));
-            return new PageResponse(result, fn);
-        }
-        return null;  // == 처음 방문한 사용자
-    }
-
-    private Member getMember(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND_ERROR));
-    }
-
-    private Room getRoom(Long id) {
-        return roomRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
-    }
 }

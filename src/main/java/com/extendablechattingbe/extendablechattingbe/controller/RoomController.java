@@ -45,12 +45,4 @@ public class RoomController {
         roomService.delete(roomId);
         return ResponseEntity.ok().build();
     }
-
-    @GetMapping("/rooms/{roomId}/chats")
-    public ResponseEntity<PageResponse> getMessageHistory(@PathVariable Long roomId, @RequestBody MessageHistoryRequestDTO requestDTO) {
-        Long memberId = requestDTO.getMemberId();
-        PageRequestDTO pageRequest = requestDTO.getPageRequest();
-        return ResponseEntity.ok()
-                    .body(roomService.getMessageHistory(roomId, memberId, pageRequest));
-    }
 }
