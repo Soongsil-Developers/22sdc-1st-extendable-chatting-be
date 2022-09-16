@@ -7,12 +7,12 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import lombok.NoArgsConstructor;
 
-@Schema(description="채팅방 생성 요청DTO")
+@Schema(description = "채팅방 생성 요청시 사용되는 DTO")
 @Getter
 @NoArgsConstructor
 public class RoomRequest {
 
-    @Schema(description="채팅방 이름", required=true)
+    @Schema(description = "채팅방 이름", required = true, example = "채팅방 이름")
     @NotBlank
     private String roomName;
 
