@@ -36,7 +36,7 @@ public class RoomController {
         @ApiResponse(responseCode = "201", description = "성공적으로 방 생성")
     })
     @PostMapping("/rooms")
-    public ResponseEntity<RoomResponse> register(@RequestBody @Valid RoomRequest request) {
+    public ResponseEntity<RoomResponse> register(@ParameterObject @Valid RoomRequest request) {
         Room room = roomService.register(request);
         return ResponseEntity.created(URI.create("/rooms/" + room.getId()))
             .body(new RoomResponse(room.getId(), room.getRoomName()));

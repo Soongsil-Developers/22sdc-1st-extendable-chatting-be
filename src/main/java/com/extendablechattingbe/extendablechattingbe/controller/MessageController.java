@@ -38,18 +38,6 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    @Operation(summary = "특정 방에 있는 메세지 목록 획득", description = "특정 방에 있는 메세지 목록을 페이징 처리해 얻을 수 있습니다.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "특정 메세지를 성공적으로 획득", content = @Content(schema = @Schema(implementation = PageResponse.class))),
-        @ApiResponse(responseCode = "404", description = "입력한 정보가 데이터 베이스에 저장되어있지 않습니다.", content = @Content(schema = @Schema(implementation = SimpleResponseDTO.class)))
-    })
-    @GetMapping("/rooms/{roomId}/chats")
-    public ResponseEntity<PageResponse> getMessageList(
-        @Parameter(name = "roomId", description = "방의 아이디", in = ParameterIn.PATH) @PathVariable Long roomId,
-        @ParameterObject PageRequestDTO requestDTO) {
-        PageResponse response = messageService.getMessagelist(roomId, requestDTO);
-        return ResponseEntity.ok().body(response);
-    }
 
     @Operation(summary = "특정 메세지 획득", description = "특정 채팅에 대한 방 아이디 및 채팅 아이디를 파라미터로 입력하면, 특정 채팅을 가져올 수 있습니다.")
     @ApiResponses({
