@@ -25,21 +25,10 @@ public class Room {
 
     private String roomName;
 
-//    @Transient   웹 소켓과 중복
-//    private Set<WebSocketSession> sessions = new HashSet<>();
 
     public Room(String roomName) {
         this.roomName = roomName;
     }
 
-//    웹 소켓과 중복
-//    public void sendMessage(Message message, ObjectMapper objectMapper) {
-//        sessions.parallelStream().forEach(session -> {
-//            try {
-//                session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//    }
+
 }

@@ -8,19 +8,20 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Schema(description = "페이지 반환시 사용되는 DTO")
 @Data
 public class PageResponse<DTO, EN> {
 
-    @Schema(description = "페이지 내용")
+    @Schema(description = "페이지 내용", example = "Entity List")
     private List<DTO> contents;
 
-    @Schema(description = "페이지 번호")
+    @Schema(description = "페이지 번호", example = "1")
     private int page;
 
-    @Schema(description = "페이지 사이즈")
+    @Schema(description = "페이지 사이즈", example = "10")
     private int size;
 
-    @Schema(description = "페이지 전체 사이즈")
+    @Schema(description = "페이지 전체 사이즈", example = "5")
     private int totalPage;
 
     public PageResponse(Page<EN> result, Function<EN, DTO> fn) {

@@ -5,13 +5,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+@Schema(description = "방 반환시 사용되는 DTO")
 @Getter
 public class RoomResponse {
 
-    @Schema(description = "방의 아이디")
+    @Schema(description = "방의 아이디", example = "1")
     private Long id;
 
-    @Schema(description = "방의 이름")
+    @Schema(description = "방의 이름", example = "방 이름")
     private String roomName;
 
     @Builder

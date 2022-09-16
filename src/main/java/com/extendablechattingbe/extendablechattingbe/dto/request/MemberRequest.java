@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
+@Schema(description = "회원가입 요청시 사용되는 DTO")
 @Getter
 public class MemberRequest {
 

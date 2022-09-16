@@ -7,24 +7,25 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+@Schema(description = "메세지 반환시 사용되는 DTO")
 @Getter
 @ToString
 public class MessageResponse {
 
 
-    @Schema(description = "메세지 아이디")
+    @Schema(description = "메세지 아이디", example = "1")
     private Long id;
 
-    @Schema(description = "메세지 내용")
+    @Schema(description = "메세지 내용", defaultValue = "메세지 내용")
     private String message;
 
-    @Schema(description = "메세지가 전송된 방의 아이디")
+    @Schema(description = "메세지가 전송된 방의 아이디", example = "2")
     private Long roomId;
 
-    @Schema(description = "메세지를 보낸 멤버의 아이디")
+    @Schema(description = "메세지를 보낸 멤버의 아이디", example = "3")
     private Long memberId;
 
-    @Schema(description = "메세제의 타입")
+    @Schema(description = "메세지의 타입", example = "TALK")
     private MessageType type;
 
     @Builder

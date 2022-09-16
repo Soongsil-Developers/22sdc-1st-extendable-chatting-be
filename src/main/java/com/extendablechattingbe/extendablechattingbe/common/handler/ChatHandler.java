@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.CloseStatus;
@@ -43,7 +44,8 @@ public class ChatHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) {
         System.out.println("========afterConnectionEstablished========");
 
-        String json = qs2json(URLDecoder.decode(Objects.requireNonNull(session.getUri()).getQuery(), StandardCharsets.UTF_8));
+        String json = qs2json(URLDecoder.decode(Objects.requireNonNull(session.getUri()).getQuery(),
+            StandardCharsets.UTF_8));
 
         try {
             Map<String, String> map = objectMapper.readValue(json, Map.class);
@@ -55,7 +57,7 @@ public class ChatHandler extends TextWebSocketHandler {
 
             log.info("[CONNECT] user successfully connected");
             for (WebSocketSession ws : chatRoomMap.get(roomId)) {
-                ws.sendMessage(new TextMessage(userId+"님이 채팅방에 입장하셨습니다."));
+                ws.sendMessage(new TextMessage(userId + "님이 채팅방에 입장하셨습니다."));
             }
 
         } catch (IOException e) {
@@ -70,7 +72,8 @@ public class ChatHandler extends TextWebSocketHandler {
         log.info("\npayload : " + payload);
 
         try {
-            MessageRequestDto messageRequestDto = objectMapper.readValue(payload, MessageRequestDto.class);
+            MessageRequestDto messageRequestDto = objectMapper.readValue(payload,
+                MessageRequestDto.class);
             Long roomId = messageRequestDto.getRoomId();
 
             messageService.saveMessage(messageRequestDto);
@@ -90,7 +93,8 @@ public class ChatHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         System.out.println("========afterConnectionClosed========");
 
-        String json = qs2json(URLDecoder.decode(session.getUri().getQuery(), StandardCharsets.UTF_8));
+        String json = qs2json(
+            URLDecoder.decode(session.getUri().getQuery(), StandardCharsets.UTF_8));
 
         try {
             Map<String, String> map = objectMapper.readValue(json, Map.class);
@@ -101,7 +105,7 @@ public class ChatHandler extends TextWebSocketHandler {
 
             log.info("[DISCONNECT] user disconnect success");
             for (WebSocketSession ws : chatRoomMap.get(roomId)) { //방에 남아있는 사람에게 GOOD BYE
-                ws.sendMessage(new TextMessage(userId+"로그아웃하셨습니다."));
+                ws.sendMessage(new TextMessage(userId + "로그아웃하셨습니다."));
             }
 
         } catch (IOException e) {

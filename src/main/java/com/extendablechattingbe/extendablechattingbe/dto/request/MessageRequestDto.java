@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
+@Schema(description = "메세지 전송시 사용되는 DTO")
 @Getter
 @NoArgsConstructor
 public class MessageRequestDto {
@@ -27,7 +29,8 @@ public class MessageRequestDto {
     private MessageType type;
 
     @Builder
-    public MessageRequestDto(String message, String nickname, Long roomId, Long memberId, MessageType type) {
+    public MessageRequestDto(String message, String nickname, Long roomId, Long memberId,
+        MessageType type) {
         this.message = message;
         this.nickname = nickname;
         this.roomId = roomId;

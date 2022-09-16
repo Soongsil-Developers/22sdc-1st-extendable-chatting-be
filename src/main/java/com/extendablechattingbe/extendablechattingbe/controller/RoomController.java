@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +36,10 @@ public class RoomController {
         @ApiResponse(responseCode = "201", description = "성공적으로 방 생성")
     })
     @PostMapping("/rooms")
-    public ResponseEntity<Room> register(@RequestBody @Valid RoomRequest request) {
+    public ResponseEntity<RoomResponse> register(@RequestBody @Valid RoomRequest request) {
         Room room = roomService.register(request);
-        return ResponseEntity.created(URI.create("/rooms/" + room.getId())).body(room);
+        return ResponseEntity.created(URI.create("/rooms/" + room.getId()))
+            .body(new RoomResponse(room.getId(), room.getRoomName()));
     }
 
     @Operation(summary = "페이징 처리된 방 목록 획득", description = "페이지,사이즈를 입력하면 방 목록을 페이징 처리 하여 얻을 수 있습니다.")
@@ -45,7 +47,7 @@ public class RoomController {
         @ApiResponse(responseCode = "200", description = "방목록을 성공적으로 획득", content = @Content(schema = @Schema(implementation = PageResponse.class)))
     })
     @GetMapping("/rooms")
-    public ResponseEntity<PageResponse> getList(PageRequestDTO request) {
+    public ResponseEntity<PageResponse> getList(@ParameterObject PageRequestDTO request) {
         return ResponseEntity.ok().body(roomService.getList(request));
     }
 
@@ -53,7 +55,7 @@ public class RoomController {
     @Operation(summary = "특정 방 정보 획득", description = "방의 아이디를 파라미터로 넣으면, 특정 방에 대한 정보를 얻을 수 있습니다.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "특정 방에 대한 정보를 성공적으로 획득", content = @Content(schema = @Schema(implementation = RoomResponse.class))),
-        @ApiResponse(responseCode = "404", description = "입력한 방의 아이디가 데이터 베이스에 저장되어있지 않습니다.",content = @Content(schema = @Schema(implementation = SimpleResponseDTO.class)))
+        @ApiResponse(responseCode = "404", description = "입력한 방의 아이디가 데이터 베이스에 저장되어있지 않습니다.", content = @Content(schema = @Schema(implementation = SimpleResponseDTO.class)))
     })
     @GetMapping("/rooms/{roomId}")
     private ResponseEntity<RoomResponse> getOne(
@@ -64,7 +66,7 @@ public class RoomController {
     @Operation(summary = "특정 방 삭제", description = "방의 아이디를 파라미터로 넣으면, 특정 방을 삭제 할 수 있습니다.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "특정 방을 성공적으로 삭제"),
-        @ApiResponse(responseCode = "404", description = "입력한 방에 대한 정보가 데이터 베이스에 저장되어있지 않습니다.",content = @Content(schema = @Schema(implementation = SimpleResponseDTO.class)))
+        @ApiResponse(responseCode = "404", description = "입력한 방에 대한 정보가 데이터 베이스에 저장되어있지 않습니다.", content = @Content(schema = @Schema(implementation = SimpleResponseDTO.class)))
     })
     @DeleteMapping("/rooms/{roomId}")
     private ResponseEntity delete(
