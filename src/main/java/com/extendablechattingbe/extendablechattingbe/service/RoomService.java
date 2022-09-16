@@ -2,11 +2,14 @@ package com.extendablechattingbe.extendablechattingbe.service;
 
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
+import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
+import com.extendablechattingbe.extendablechattingbe.repository.MessageRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
+
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +28,6 @@ import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessa
 public class RoomService {
 
     private final RoomRepository roomRepository;
-
 
     @Transactional
     public Room register(RoomRequest request) {
@@ -64,6 +66,6 @@ public class RoomService {
 
     public Room validateAndFindRoomById(Long roomId) {
         return roomRepository.findById(roomId)
-            .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new CustomException(ROOM_NOT_FOUND_ERROR));
     }
 }

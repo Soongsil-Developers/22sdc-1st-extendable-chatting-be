@@ -1,6 +1,7 @@
 package com.extendablechattingbe.extendablechattingbe.controller;
 
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
+import com.extendablechattingbe.extendablechattingbe.dto.request.MessageHistoryRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.PageRequestDTO;
 import com.extendablechattingbe.extendablechattingbe.dto.request.RoomRequest;
 import com.extendablechattingbe.extendablechattingbe.dto.response.PageResponse;
@@ -8,6 +9,7 @@ import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.service.RoomService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,4 @@ public class RoomController {
         roomService.delete(roomId);
         return ResponseEntity.ok().build();
     }
-
-
 }
