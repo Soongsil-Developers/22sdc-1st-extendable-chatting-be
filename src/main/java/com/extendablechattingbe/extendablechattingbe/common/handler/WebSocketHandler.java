@@ -14,6 +14,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -62,7 +63,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    //TODO -> 이 로직들에 @Transactional 붙일 수 있을까?? (일부 세션에만 전파될 수도 있으니까)
+    @Transactional
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage){
         final String payload = textMessage.getPayload();
         //log.info("payload : " + payload);
