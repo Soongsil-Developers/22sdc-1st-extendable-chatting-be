@@ -28,7 +28,7 @@ public class MessageController {
     @GetMapping("/rooms/{roomId}/chats")
     public ResponseEntity<PageResponse> getMessageList(@PathVariable Long roomId,
         PageRequestDTO requestDTO) {
-        PageResponse response = messageService.getMessagelist(roomId, requestDTO);
+        PageResponse response = messageService.getMessages(roomId, requestDTO);
         return ResponseEntity.ok().body(response);
     }
 

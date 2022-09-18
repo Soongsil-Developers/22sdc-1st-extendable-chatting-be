@@ -32,7 +32,6 @@ import static com.extendablechattingbe.extendablechattingbe.common.CustomMessage
 @Transactional(readOnly = true)
 public class MessageService {
 
-    private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
     private final MessageRepository messageRepository;
 
@@ -59,7 +58,7 @@ public class MessageService {
 
 
 
-    public PageResponse getMessagelist(Long roomId, PageRequestDTO pageRequestDTO) {
+    public PageResponse getMessages(Long roomId, PageRequestDTO pageRequestDTO) {
 
         PageRequest request = PageRequest.of(pageRequestDTO.getPage() - 1,
             pageRequestDTO.getSize());

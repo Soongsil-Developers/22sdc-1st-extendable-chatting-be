@@ -22,7 +22,7 @@ public class RoomMember {
 
     @Id
     @GeneratedValue
-    @Column(name = "roomuser_id")
+    @Column(name = "room_member_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
