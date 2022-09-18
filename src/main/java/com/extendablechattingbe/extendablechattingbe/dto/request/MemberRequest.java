@@ -1,8 +1,8 @@
 package com.extendablechattingbe.extendablechattingbe.dto.request;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
+
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 public class MemberRequest {

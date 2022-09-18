@@ -1,12 +1,16 @@
 package com.extendablechattingbe.extendablechattingbe.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-import static javax.persistence.GenerationType.*;
+import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

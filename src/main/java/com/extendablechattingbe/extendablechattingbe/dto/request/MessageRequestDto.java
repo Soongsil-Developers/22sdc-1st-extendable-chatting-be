@@ -10,17 +10,25 @@ import lombok.NoArgsConstructor;
 public class MessageRequestDto {
 
     private String message;
-    private String nickname;
-    private Long roomId;
-    private Long memberId;
     private MessageType type;
+    private Long memberId;
+    private Long roomId;
 
     @Builder
-    public MessageRequestDto(String message, String nickname, Long roomId, Long memberId, MessageType type) {
+    public MessageRequestDto(String message, MessageType type, Long memberId, Long roomId) {
         this.message = message;
-        this.nickname = nickname;
-        this.roomId = roomId;
-        this.memberId = memberId;
         this.type = type;
+        this.memberId = memberId;
+        this.roomId = roomId;
+    }
+
+    @Override
+    public String toString() {
+        return "MessageRequestDTO{" +
+            "message='" + message + '\'' +
+            ", type=" + type +
+            ", memberId=" + memberId +
+            ", roomId=" + roomId +
+            '}';
     }
 }

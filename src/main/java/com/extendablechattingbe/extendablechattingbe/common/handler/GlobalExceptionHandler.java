@@ -7,29 +7,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.BAD_REQUEST_ERROR;
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.INTERNAL_SERVER_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.BAD_REQUEST_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.INTERNAL_SERVER_ERROR;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler{
 
     @ExceptionHandler(CustomException.class)
     protected ResponseEntity<SimpleResponseDTO> handleCustomException(final CustomException e) {
-        //e.printStackTrace();
+        e.printStackTrace();
         return buildResponseEntity(e.getSimpleResponseDTO());
     }
 
     @ExceptionHandler({IllegalArgumentException.class})
     protected ResponseEntity<SimpleResponseDTO>handleBadRequestException(final IllegalArgumentException e){
-        //e.printStackTrace();
+        e.printStackTrace();
         SimpleResponseDTO simpleResponseDTO = SimpleResponseDTO.of(BAD_REQUEST_ERROR,e.getMessage());
         return buildResponseEntity(simpleResponseDTO);
     }
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<SimpleResponseDTO> handleException(final Exception e) {
-        //e.printStackTrace();
+        e.printStackTrace();
         return buildResponseEntity(SimpleResponseDTO.of(INTERNAL_SERVER_ERROR));
     }
 

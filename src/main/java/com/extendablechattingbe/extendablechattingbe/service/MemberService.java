@@ -1,9 +1,5 @@
 package com.extendablechattingbe.extendablechattingbe.service;
 
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.MEMBER_NOT_FOUND_ERROR;
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_MEMBER_NOT_FOUND_ERROR;
-import static com.extendablechattingbe.extendablechattingbe.common.ResponseMessages.ROOM_NOT_FOUND_ERROR;
-
 import com.extendablechattingbe.extendablechattingbe.common.exception.CustomException;
 import com.extendablechattingbe.extendablechattingbe.domain.Member;
 import com.extendablechattingbe.extendablechattingbe.domain.Room;
@@ -13,12 +9,15 @@ import com.extendablechattingbe.extendablechattingbe.dto.response.MemberResponse
 import com.extendablechattingbe.extendablechattingbe.dto.response.RoomResponse;
 import com.extendablechattingbe.extendablechattingbe.repository.MemberRepository;
 import com.extendablechattingbe.extendablechattingbe.repository.RoomMemberRepository;
-import com.extendablechattingbe.extendablechattingbe.repository.RoomRepository;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.MEMBER_NOT_FOUND_ERROR;
+import static com.extendablechattingbe.extendablechattingbe.common.CustomMessages.ROOM_MEMBER_NOT_FOUND_ERROR;
 
 @Service
 @RequiredArgsConstructor
