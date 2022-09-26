@@ -1,3 +1,7 @@
+<div align=center><h1>확장성을 가진 채팅 서버 구축</h1></div>
+
+<br>
+
 ## 🛠Server Architecture
 <img width="600" alt="Server Architecture" src="https://user-images.githubusercontent.com/87802191/191989034-6573f7d5-a9dd-433d-94f7-0e2774ad5a77.png">
 
@@ -12,7 +16,7 @@
 	<tr><td>API Documentation</td><td>Swagger</td></tr>
 	<tr><td>Database</td><td>MySQL</td></tr>
 	<tr><td>Test</td><td>JUnit5, Mockito</td></tr>
-	<tr><th rowspan="3">🤝Collaboration</th><td>Api Test</td><td>Postman</td></tr>
+	<tr><th rowspan="3">🤝Collaboration</th><td>API Test</td><td>Postman</td></tr>
 	<tr><td>Communication</td><td>Notion, Gather</td></tr>
 	<tr><td>Version Control</td><td>Git, Github</td></tr>
 	<tr><th>☁️AWS Cloud Service</th><td colspan="2">EC2, S3, CodeDeploy, RDS, ELB</td></tr>
@@ -31,4 +35,5 @@
 <br>
 
 ## 📨Messaging Process
+- 예) 사용자 A가 1번 방에 입장하여 메시지를 전송하는 경우
 <img width="800" alt="메시지 전달 과정" src="https://user-images.githubusercontent.com/87802191/191988542-15a0ac50-b0d3-4dae-9eb2-83dd609f0794.png">
